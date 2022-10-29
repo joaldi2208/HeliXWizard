@@ -1,0 +1,16 @@
+* Average chemical shift (ACS)
+** ACS_{i} = (1/N) \sum_{k=1,N} \omega_{k}
+i is type nucleus
+N number of cross peaks
+\omega_{k} is corresponding chemical shift of the kth resonance
+** N-HSQC shows how much the N is shifted in average
+
+* Biological Magnetic Resonance Data Bank (BMRB)
+** Stores experimental and derived data from NMR studies
+** 2D NMR spectra (including time-domain data) and assigned chemical shifts for over 1000 biological small molecules
+** API: Return all chemical shifts in the BMRB, optionally filtered by residue, atom type, and chemical shift value. Optionally, also return the pH and temperature at which the chemical shift was observed.
+** Python (PyBMRB) and R (RBMRB) that enable database-level and entry-level data visualizations without the need for downloading and parsing steps
+** PyBMRB and RBMRB have the functionality of simulating 1H–15N correlations from assigned chemical shifts in BMRB entries
+** The BMRB home page provides a link to a sample PyBMRB Jupyter Notebook, which was created by converting the PyBMRB GitHub repository into an interactive notebook by using a third-party server (https://mybinder.org), which does not require any installation and simply opens in a web browser.
+*** https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8064287/
+*** here jabref link
