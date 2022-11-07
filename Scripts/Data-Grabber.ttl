@@ -1,6 +1,0 @@
-:datagrabber ;
-:Modeltype :fetching
-:Papers ...
-:Websource ...
-:Path "Scripts/Data-Grabber.py"
-:Date "2022-11-05T08:45:30"
