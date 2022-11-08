@@ -1,14 +1,9 @@
 
-:datagrabber a :Data-Generator ;
-  :ex "https://bmrb.io/data_library/summary/index.php?bmrbId=30691" ;
-  :ex "https://www.ncbi.nlm.nih.gov/Structure/pdb/6V1W" ;
-  :ex "https://www.rcsb.org/structure/6V1W" ;
-  :ex "https://www.ncbi.nlm.nih.gov/Structure/pdb/6V1N" ;
+:Data-Grabber a :Data-Generator ;
   :dataFrom :PDB ;
   :dataFrom :BMRB ;
   :dataFrom :NCBI ;
-  :input "None" ;
-  :output "Scripts/Data-Generator/overview-sec-str.txt" ;
+  :usedAsInput :DataFolder ;
   rdfs:comment "downloads HSQC spectra and secondary structure of protein" ;
   :located "Scripts/Data-Generator/Data-Grabber.py" ;
   :date "20221107" .

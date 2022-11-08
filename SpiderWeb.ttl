@@ -1,0 +1,49 @@
+# "a" replaces "rdf:type"
+
+# >>> list of used properties >>>
+# :located, :date, rdfs:comment, :outputOf, :usedAsInput, :inspiredBy, :webExample
+# <<< list of used properties <<<
+
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix : <http://example.org/> .
+
+#---------Script-Typ----------#
+:Data-Generator a rdf:Class .
+:Data-Doc a rdf:Class .
+:Raw-Data-Doc rdf:Class .
+
+#--------Sources------------#
+:Source a rdf:Class .
+  :Papers rdfs:subClassOf :Source .
+  :Databanks rdfs:subClassOf :Source .
+    :PDB rdfs:subClassOf :Databanks .
+    :BMRB rdfs:subClassOf :Databanks .
+    :NCBI rdfs:subClassOf :Databanks .
+
+
+
+:DataFolder a :Raw-Data-Doc ;
+  :dataFrom :PDB ;
+  rdfs:comment "Downloads from PDB-Archivs via 'rsync -rlpt -v -z --delete --port=33444 \rsync.rcsb.org::ftp_data/structures/divided/nmr_chemical_shifts/ ../Data'. Contain BMRB and PDB IDs." ;
+  :webExample "https://www.wwpdb.org/ftp/pdb-ftp-sites" ;
+  :located "Data/" ;
+  :date "20221108" .
+:overview-sec-str a :Data-Doc ;
+  :webExample "https://bmrb.io/data_library/summary/index.php?bmrbId=30691" ;
+  :webExample "https://www.ncbi.nlm.nih.gov/Structure/pdb/6V1W" ;
+  :webExample "https://www.rcsb.org/structure/6V1W" ;
+  :webExample "https://www.ncbi.nlm.nih.gov/Structure/pdb/6V1N" ;
+  :outputOf :Data-Grabber ;
+  :located "Scripts/Data-Generator/overview-sec-str.txt" ;
+  rdfs:comment "contains IDs and secondary structure information of makromolecules" ;
+  :date "20221108" .
+:Data-Grabber a :Data-Generator ;
+  :dataFrom :PDB ;
+  :dataFrom :BMRB ;
+  :dataFrom :NCBI ;
+  :usedAsInput :DataFolder ;
+  rdfs:comment "downloads HSQC spectra and secondary structure of protein" ;
+  :located "Scripts/Data-Generator/Data-Grabber.py" ;
+  :date "20221107" .
+

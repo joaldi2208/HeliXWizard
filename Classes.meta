@@ -1,0 +1,24 @@
+# "a" replaces "rdf:type"
+
+# >>> list of used properties >>>
+# :located, :date, rdfs:comment, :outputOf, :usedAsInput, :inspiredBy, :webExample
+# <<< list of used properties <<<
+
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix : <http://example.org/> .
+
+#---------Script-Typ----------#
+:Data-Generator a rdf:Class .
+:Data-Doc a rdf:Class .
+:Raw-Data-Doc rdf:Class .
+
+#--------Sources------------#
+:Source a rdf:Class .
+  :Papers rdfs:subClassOf :Source .
+  :Databanks rdfs:subClassOf :Source .
+    :PDB rdfs:subClassOf :Databanks .
+    :BMRB rdfs:subClassOf :Databanks .
+    :NCBI rdfs:subClassOf :Databanks .
+
+

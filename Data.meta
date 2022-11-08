@@ -1,0 +1,7 @@
+
+:DataFolder a :Raw-Data-Doc ;
+  :dataFrom :PDB ;
+  rdfs:comment "Downloads from PDB-Archivs via 'rsync -rlpt -v -z --delete --port=33444 \rsync.rcsb.org::ftp_data/structures/divided/nmr_chemical_shifts/ ../Data'. Contain BMRB and PDB IDs." ;
+  :webExample "https://www.wwpdb.org/ftp/pdb-ftp-sites" ;
+  :located "Data/" ;
+  :date "20221108" .

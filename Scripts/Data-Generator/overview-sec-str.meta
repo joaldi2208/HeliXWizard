@@ -1,0 +1,10 @@
+
+:overview-sec-str a :Data-Doc ;
+  :webExample "https://bmrb.io/data_library/summary/index.php?bmrbId=30691" ;
+  :webExample "https://www.ncbi.nlm.nih.gov/Structure/pdb/6V1W" ;
+  :webExample "https://www.rcsb.org/structure/6V1W" ;
+  :webExample "https://www.ncbi.nlm.nih.gov/Structure/pdb/6V1N" ;
+  :outputOf :Data-Grabber ;
+  :located "Scripts/Data-Generator/overview-sec-str.txt" ;
+  rdfs:comment "contains IDs and secondary structure information of makromolecules" ;
+  :date "20221108" .
