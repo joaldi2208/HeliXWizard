@@ -12,6 +12,7 @@
 :Data-Generator a rdf:Class .
 :Data-Doc a rdf:Class .
 :Raw-Data-Doc rdf:Class .
+:Analysis-Script rdf:Class .
 
 #--------Sources------------#
 :Source a rdf:Class .
@@ -20,7 +21,7 @@
     :PDB rdfs:subClassOf :Databanks .
     :BMRB rdfs:subClassOf :Databanks .
     :NCBI rdfs:subClassOf :Databanks .
-
+    :DSSP rdfs:subClassOf :Databanks .
 
 
 :DataFolder a :Raw-Data-Doc ;
@@ -29,6 +30,17 @@
   :webExample "https://www.wwpdb.org/ftp/pdb-ftp-sites" ;
   :located "Data/" ;
   :date "20221108" .
+:First-Data-Inspection a :Analysis-Script ;
+  :usedAsInput :chemical_shifts ;
+  :usedAsInput :struc_and_cond ;
+  rdfs:comment "First Inspection of the chemical_shifts and struc_and_conda dataframe to analyse data and find 'wrong' data" ;
+  :located "Scripts/Data-Generator/First-Data-Inspection.ipynb" ;
+  :date "20221117" .
+:chemical_shifts a :Data-Doc ;
+  :outputOf :Data-Grabber2 ;
+  :located "Scripts/Data-Generator/chemical_shifts.pkl" ;
+  rdfs:comment "contains IDs and annotated chemical shifts of macromolecules" ;
+  :date "20221117" .
 :overview-sec-str a :Data-Doc ;
   :webExample "https://bmrb.io/data_library/summary/index.php?bmrbId=30691" ;
   :webExample "https://www.ncbi.nlm.nih.gov/Structure/pdb/6V1W" ;
@@ -38,6 +50,11 @@
   :located "Scripts/Data-Generator/overview-sec-str.txt" ;
   rdfs:comment "contains IDs and secondary structure information of makromolecules" ;
   :date "20221108" .
+:struc_and_cond a :Data-Doc ;
+  :outputOf :Data-Grabber2 ;
+  :located "Scripts/Data-Generator/struc_and_cond.pkl" ;
+  rdfs:comment "contains IDs and secondary structure informations and measure conditions of macromolecules" ;
+  :date "20221117" .
 :Data-Grabber a :Data-Generator ;
   :dataFrom :PDB ;
   :dataFrom :BMRB ;
@@ -47,3 +64,22 @@
   :located "Scripts/Data-Generator/Data-Grabber.py" ;
   :date "20221107" .
 
+
+:Data-Preprocessor a :Data-Generator ;
+  :usedAsInput :chemical-shifts ;
+  :usedAsInput :struc-and-cond ;
+  rdfs:comment "NOT DONE YET. transforms raw data into uniform data and filters data within a certain condition range" ;
+  :located "Scripts/Data-Generator/Data-Preprocessor.py" ;
+  :date "20221125" .
+:Many-Shift-Tables a :Data-Doc ;
+  :outputOf :Data-Grabber2 ;
+  rdfs:comment "NOT DONE YET. Shows PDB ID of Files with more than one chemical shift table. This function will possibly be outcommented." ;
+  :located "Scripts/Data-Generator/Many-Shift-Tables.txt" ;
+  :date "20221125" .
+:Data-Grabber2 a :Data-Generator ;
+  :dataFrom :PDB ;
+  :dataFrom :DSSP ;
+  :usedAsInput :DataFolder ;
+  rdfs:comment "downloads chemical shifts for different atoms as well as conditions and secondary structur; data generated is not raw data, data transformation is included like changes from ATM to 1 (pressure)" ;
+  :located "Scripts/Data-Generator/Data-Grabber2.py" ;
+  :date "20221117" .

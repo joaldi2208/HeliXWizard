@@ -1,0 +1,7 @@
+
+:First-Data-Inspection a :Analysis-Script ;
+  :usedAsInput :chemical_shifts ;
+  :usedAsInput :struc_and_cond ;
+  rdfs:comment "First Inspection of the chemical_shifts and struc_and_conda dataframe to analyse data and find 'wrong' data" ;
+  :located "Scripts/Data-Generator/First-Data-Inspection.ipynb" ;
+  :date "20221117" .

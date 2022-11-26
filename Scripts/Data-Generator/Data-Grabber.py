@@ -21,7 +21,7 @@ import re
 # part 1
 def get_paths():
     path2files = []
-    for root, _, filenames in os.walk("../Data/"):
+    for root, _, filenames in os.walk("../../Data/"):
         path2files.extend([os.path.join(root, name) for name in filenames])
     return path2files
 
@@ -47,6 +47,24 @@ def get_ids(path2files):
 
 
 # part 4
+def get_cond(cond_rex, bmrb_id):
+    buffer = BytesIO()
+    c = pycurl.Curl()
+    c.setopt(c.URL, f"https://bmrb.io/data_library/summary/index.php?bmrbId={bmrb_id}")
+    c.setopt(c.WRITEDATA, buffer)
+    c.setopt(c.CAINFO, certifi.where())
+    c.perform()
+    c.close()
+    body = buffer.getvalue() # byte string
+    bmrb_file = body.decode("iso-8859-1")
+    #print(bmrb_file)
+    
+    conditions = cond_rex.findall(str(bmrb_file))
+   
+    return conditions
+
+
+    
 def get_csv_HSQC(bmrb_id):
     buffer = BytesIO()
     c = pycurl.Curl()
@@ -75,7 +93,7 @@ def get_chain_type(chain_rex, pdb_id):
     return chain_type
 
 
-def get_2nd_str_data(loc_rex, len_rex, type_rex, gb_file):
+def get_2nd_str_data(loc_rex, len_rex, type_rex, conditions_rex, gb_file):
     sec_str_loc = loc_rex.findall(str(gb_file))
     sec_str_type = type_rex.findall(str(gb_file))
     sec_str_len = len_rex.findall(str(gb_file))[1]
@@ -83,7 +101,7 @@ def get_2nd_str_data(loc_rex, len_rex, type_rex, gb_file):
         return sec_str_loc, sec_str_type, sec_str_len
      
 
-def get_data(entry_ids, get_chain_type_rex, get_2nd_str_data_rex):
+def get_data(entry_ids, get_chain_type_rex, get_2nd_str_data_rex, get_cond_rex):
     # you should save the data here in a list and then return the list
     data = []
     files_not_found = 0
@@ -91,10 +109,14 @@ def get_data(entry_ids, get_chain_type_rex, get_2nd_str_data_rex):
         csv_HSQC = get_csv_HSQC(entry_id.bmrb)
         chain_type = get_chain_type_rex(entry_id.pdb)
         if "error" not in csv_HSQC:
+            
+            conditions = get_cond_rex(entry_id.bmrb)
+            
             try:
                 filename = entrez.fetch(f"{entry_id.pdb}_{chain_type}", gettempdir(), "gb", "protein", "gb")
                 gb_file = gb.GenBankFile.read(filename)
                 sec_str_loc, sec_str_type, sec_str_len = get_2nd_str_data_rex(gb_file)
+
             except biotite.database.RequestError:
                 files_not_found += 1
             finally:
@@ -106,6 +128,10 @@ def get_data(entry_ids, get_chain_type_rex, get_2nd_str_data_rex):
                 print("sec_str_loc: ", sec_str_loc)
                 print("sec_str_type: ", sec_str_type)
                 print("sec_str_len: ", sec_str_len)
+                for cond, value in conditions:
+                    print(cond, value) # not as it should be right now
+                # https://bmrb.io/data_library/summary/index.php?bmrbId=30300 interesting example
+                # example 3 shows more then one condition
                 print("files_not_found: ", files_not_found)
                 print("------------------------------------------------")
                
@@ -117,9 +143,11 @@ if __name__ == "__main__":
     loc_rex = re.compile("SecStr\ *(\d*)\.\.(\d*)")
     len_rex = re.compile("source\ *\d*..(\d*)")
     type_rex = re.compile("sec_str_type=\"([^\"]*)")
+    cond_rex = re.compile("(pH:|pressure:|temperature:|ionic strength:)[^\d]*([\d.]*)")
 
     get_chain_type_rex = partial(get_chain_type, chain_type_rex)
-    get_2nd_str_data_rex = partial(get_2nd_str_data, loc_rex, len_rex, type_rex)
+    get_2nd_str_data_rex = partial(get_2nd_str_data, loc_rex, len_rex, type_rex, cond_rex)
+    get_cond_rex = partial(get_cond, cond_rex)
     
     path2files = get_paths() # from data dir, should be changed later
     entry_ids, path_files_not_found = get_ids(path2files)
@@ -127,7 +155,7 @@ if __name__ == "__main__":
     print("path_files_not_found: ", path_files_not_found)
     print("++++++++++++++++++++++++++++++++++++++++++")
     
-    data = get_data(entry_ids, get_chain_type_rex, get_2nd_str_data_rex)
+    data = get_data(entry_ids, get_chain_type_rex, get_2nd_str_data_rex, get_cond_rex)
     # what about pdb_id:  6V1N, https://www.ncbi.nlm.nih.gov/Structure/pdb/6V1N
     print("++++++++++++++++++++++++++++++++++++++++++")
     print(len(data))

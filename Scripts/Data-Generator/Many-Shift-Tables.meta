@@ -1,0 +1,6 @@
+
+:Many-Shift-Tables a :Data-Doc ;
+  :outputOf :Data-Grabber2 ;
+  rdfs:comment "NOT DONE YET. Shows PDB ID of Files with more than one chemical shift table. This function will possibly be outcommented." ;
+  :located "Scripts/Data-Generator/Many-Shift-Tables.txt" ;
+  :date "20221125" .

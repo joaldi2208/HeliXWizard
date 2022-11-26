@@ -1,0 +1,6 @@
+
+:struc_and_cond a :Data-Doc ;
+  :outputOf :Data-Grabber2 ;
+  :located "Scripts/Data-Generator/struc_and_cond.pkl" ;
+  rdfs:comment "contains IDs and secondary structure informations and measure conditions of macromolecules" ;
+  :date "20221117" .

@@ -12,6 +12,7 @@
 :Data-Generator a rdf:Class .
 :Data-Doc a rdf:Class .
 :Raw-Data-Doc rdf:Class .
+:Analysis-Script rdf:Class .
 
 #--------Sources------------#
 :Source a rdf:Class .
@@ -20,5 +21,5 @@
     :PDB rdfs:subClassOf :Databanks .
     :BMRB rdfs:subClassOf :Databanks .
     :NCBI rdfs:subClassOf :Databanks .
-
+    :DSSP rdfs:subClassOf :Databanks .
 

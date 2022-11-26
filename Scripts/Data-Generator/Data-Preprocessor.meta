@@ -1,0 +1,7 @@
+
+:Data-Preprocessor a :Data-Generator ;
+  :usedAsInput :chemical-shifts ;
+  :usedAsInput :struc-and-cond ;
+  rdfs:comment "NOT DONE YET. transforms raw data into uniform data and filters data within a certain condition range" ;
+  :located "Scripts/Data-Generator/Data-Preprocessor.py" ;
+  :date "20221125" .
