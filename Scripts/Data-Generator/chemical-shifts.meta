@@ -1,6 +1,0 @@
-
-:chemical_shifts a :Data-Doc ;
-  :outputOf :Data-Grabber2 ;
-  :located "Scripts/Data-Generator/chemical_shifts.pkl" ;
-  rdfs:comment "contains IDs and annotated chemical shifts of macromolecules" ;
-  :date "20221117" .

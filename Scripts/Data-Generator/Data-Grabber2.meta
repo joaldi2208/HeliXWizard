@@ -1,8 +1,0 @@
-
-:Data-Grabber2 a :Data-Generator ;
-  :dataFrom :PDB ;
-  :dataFrom :DSSP ;
-  :usedAsInput :DataFolder ;
-  rdfs:comment "downloads chemical shifts for different atoms as well as conditions and secondary structur; data generated is not raw data, data transformation is included like changes from ATM to 1 (pressure)" ;
-  :located "Scripts/Data-Generator/Data-Grabber2.py" ;
-  :date "20221117" .

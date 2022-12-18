@@ -1,6 +1,0 @@
-
-:files-not-found a :Data-Doc ;
-  :outputOf :Data-Grabber2 ;
-  :located "Scripts/Data-Generator/files-not-found.txt" ;
-  rdfs:comment "every file from the DataFolder that couldn't be processed is listed in form of a reason why the file couldn't be processed" ;
-  :date "20221125" .
