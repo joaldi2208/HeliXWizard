@@ -13,6 +13,7 @@
 :Data-Doc a rdf:Class .
 :Raw-Data-Doc rdf:Class .
 :Analysis-Script rdf:Class .
+:Machine-Learning-Script rdf:Class .
 
 #--------Sources------------#
 :Source a rdf:Class .

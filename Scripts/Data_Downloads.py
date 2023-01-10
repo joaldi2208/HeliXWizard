@@ -241,6 +241,8 @@ if __name__ == '__main__':
         with open("found_bmrb_ids.txt", "w") as outfile:
             for bmrb_id in found_bmrb_ids:
                 outfile.write(f"{bmrb_id},")
+                # delete last comma or
+                #replace all of it with the expressions used in the filter scripts
 
 
     elif "shift" not in args:
