@@ -1,0 +1,5 @@
+
+:filtered_by_sec_structure a :Data-Doc ;
+  :outputOf :Secondary_Structure_Filter ;
+  rdfs:comment "includes the BMRB IDs filtered by the Secondary-Structure-Filter" ;
+  :date "20230102" .

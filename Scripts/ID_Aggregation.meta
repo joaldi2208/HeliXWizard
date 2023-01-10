@@ -1,0 +1,9 @@
+:ID_Aggregation a :Data-Generator ;
+  :usedAsInput :filtered_by_ph ;
+  :usedAsInput :filtered_by_pressure ;
+  :usedAsInput :filtered_by_protein ;
+  :usedAsInput :filtered_by_sec_structure ;
+  :usedAsInput :filtered_by_shifts ;
+  :usedAsInput :filtered_by_temperature ;
+  rdfs:comment "builds the intersection of all filtered data" ;
+  :date "20230102" .

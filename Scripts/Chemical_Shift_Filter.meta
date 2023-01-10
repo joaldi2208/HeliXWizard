@@ -1,0 +1,4 @@
+:Chemical_Shift_Filter a :Analysis-Script ;
+  :usedAsInput :chemical_shifts ;
+  rdfs:comment "Displays the distribution of the shift values for N and H and deletes to BMRB IDs with to high shift values" ;
+  :date "20230102" .

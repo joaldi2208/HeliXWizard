@@ -1,0 +1,8 @@
+
+:Data_Downloads a :Data-Generator ;
+  :dataFrom :DSSP ;
+  :dataFrom :PDB ;
+  :dataFrom :BMRB ;
+  :usedAsInput :BMRB_PDB_ids ;
+  rdfs:comment "Downloads all properties for a certain BMRB/PDB ID pair from certain databases" ;
+  :date "20220102" .

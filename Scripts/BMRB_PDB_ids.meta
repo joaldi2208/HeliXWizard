@@ -1,0 +1,4 @@
+:BMRB_PDB_ids a :Data-Doc ;
+  :downloadedFrom "https://bmrb.io/ftp/pub/bmrb/nmr_pdb_integrated_data/adit_nmr_matched_pdb_bmrb_entry_ids.csv" ;
+  :rdfs:comment "downloaded csv datasheet from BMRB database with BMRB IDs and there corresponding PDB IDs - Those BMRB IDs build the fundament for the entire project" ;
+  :date "20230102" .

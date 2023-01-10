@@ -1,0 +1,5 @@
+
+:PH_Filter a :Analysis-Script ;
+  :usedAsInput :updated_measurement_conditions ;
+  rdfs:comment "filters BMRB IDs based on their pH values - BMRB ids with a pH value in the range between 5 and 8 are included" ;
+  :date "20230102" .

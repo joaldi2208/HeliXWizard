@@ -1,0 +1,7 @@
+
+:updated_measurement_conditions a :Data-Doc ;
+  :dataFrom :PDB ;
+  :dataFrom :BMRB ;
+  :outputOf :Data_Downloads ;
+  rdfs:comment "consist of all measurement conditions from BMRB and completed by missing data from PDB" ;
+  :date "20230102" .

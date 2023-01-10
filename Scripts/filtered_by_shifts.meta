@@ -1,0 +1,5 @@
+
+:filtered_by_shifts a :Data-Doc ;
+  :outputOf :Chemical_Shift_Filter ;
+  rdfs:comment "includes the BMRB IDs filtered by the Shift-Filter" ;
+  :date "20230102" .

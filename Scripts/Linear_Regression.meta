@@ -1,0 +1,7 @@
+
+:Linear_Regression a :Machine-Learning-Script ;
+  :usedAsInput :peak_matrixes ;
+  :usedAsInput :Q3_states_percentage ;
+  :usedAsInput :Q8_states_percentage ;
+  rdfs:comment "makes a linear regression for the percentage for the Q8 and Q3 states based on the count peaks matrixes" ;
+  :date "20230103" .

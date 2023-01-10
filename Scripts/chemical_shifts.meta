@@ -1,0 +1,6 @@
+
+:chemical_shifts a :Data-Doc ;
+  :dataFrom :BMRB ;
+  :outputOf :Data_Downloads ;
+  rdfs:comment "includes all shift tables for the BMRB ID" ;
+  :date "20230102" .

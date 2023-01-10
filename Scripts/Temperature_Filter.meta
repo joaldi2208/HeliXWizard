@@ -1,0 +1,5 @@
+
+:Temperature_Filter a :Analysis-Script ;
+  :usedAsInput :updated_measurement_conditions ;
+  rdfs:comment "filters BMRB Ids based on their temperature values - everthing between 273 and 310 is included" ;
+  :date "20230102" .

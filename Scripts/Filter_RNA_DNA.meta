@@ -1,0 +1,7 @@
+:Filter_RNA_DNA a :Analysis-Script ;
+  :dataFrom :PDB ;
+  :usedAsInput :found_bmrb_ids ;
+  :usedAsInput :BMRB_PDB_ids ;
+  :usedFunctionOf :Data_Downloads ;
+  rdfs:comment "Distinguishes between Proteins and RNA/DNA - BMRB IDs which include RNA/DNA are removed" ;
+  :date "20220102" .

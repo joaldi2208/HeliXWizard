@@ -1,0 +1,6 @@
+
+:Target_Q_states a :Data-Generator ;
+  :usedAsInput :secondary_structure ;
+  :usedFunctionFrom :Binning_Data ;
+  rdfs:comment "calculates the percentage of the filtered proteins for the Q3 and Q8 state" ;
+  :date "20230103" .

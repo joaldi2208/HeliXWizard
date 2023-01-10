@@ -1,0 +1,5 @@
+
+:filtered_by_protein a :Data-Doc ;
+  :outputOf :RNA_DNA_Filter ;
+  rdfs:comment "includes the BMRB IDs filtered by the RNA-DNA-Filter" ;
+  :date "20230102" .

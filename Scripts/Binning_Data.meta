@@ -1,0 +1,6 @@
+
+:Binning_Data a :Data-Generator ;
+  :usedAsInput :chemical_shifts ;
+  :usedAsInput :aggregated_bmrd_ids ;
+  rdfs:comment "bins the N-HSQC spectra with a given grid size" ;
+  :date "20230102" .

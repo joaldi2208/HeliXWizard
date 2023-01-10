@@ -1,0 +1,5 @@
+
+:filtered_by_temperature a :Data-Doc ;
+  :outputOf :Temperature_Filter ;
+  rdfs:comment "includes the BMRB IDs filtered by the Temperature-Filter" ;
+  :date "20230102" .

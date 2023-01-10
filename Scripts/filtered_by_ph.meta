@@ -1,0 +1,5 @@
+
+:filtered_by_ph a :Data-Doc ;
+  :outputOf :PH_Filter ;
+  rdfs:comment "includes the BMRB IDs filtered by the PH-Filter" ;
+  :date "20230102" .

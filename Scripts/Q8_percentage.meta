@@ -1,0 +1,5 @@
+
+:Q8_percentages a :Data-Doc ;
+  :outputOf :Target_Q_states ;
+  rdfs:comment "Percentage appearance of the secondary structure Q8 states" ;
+  :date "202301013" .

@@ -1,0 +1,5 @@
+
+:aggregated_bmrd_ids a :Data-Doc ;
+  :outputOf :ID_Aggregation ;
+  rdfs:comment "csv with the intersection of all BMRB Ids from the filter programs" ;
+  :date "20230102" .

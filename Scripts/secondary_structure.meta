@@ -1,0 +1,7 @@
+
+:secondary_structure a :Data-Doc ;
+  :dataFrom :DSSP ;
+  :outputOf :Data_Downloads ;
+  rdfs:comment "contains secondary structure information for all BMRB IDs" ;
+  :date "20232102" .
+  

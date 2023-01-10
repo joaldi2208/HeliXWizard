@@ -1,0 +1,5 @@
+
+:Pressure_Filter a :Analysis-Script ;
+  :usedAsInput :updated_measurement_conditions ;
+  rdfs:comment "filters BMRB IDs based on their pressure values - only 1 ATM is included" ;
+  :date "20230102" .

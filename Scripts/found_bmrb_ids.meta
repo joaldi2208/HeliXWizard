@@ -1,0 +1,5 @@
+
+:found_bmrb_ids a :Data-Doc ;
+  :outputOf :Data_Downloads ;
+  rdfs:comment "contains all BMRB IDs which have a spectra" ;
+  :date "20230102" .
