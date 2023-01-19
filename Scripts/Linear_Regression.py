@@ -20,7 +20,7 @@ X_train, X_test, y_train, y_test = train_test_split(counts_peaks_matrixes, Q3_pe
 
 
 #print(X_train[0])
-# --> C E H 
+# --> C E H
 X_train = np.reshape(X_train, (len(X_train),100))
 X_test = np.reshape(X_test, (len(X_test),100)) # das muss noch normiert werden
 #print(X_train[0])

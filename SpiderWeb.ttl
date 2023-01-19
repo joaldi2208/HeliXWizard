@@ -13,6 +13,7 @@
 :Data-Doc a rdf:Class .
 :Raw-Data-Doc rdf:Class .
 :Analysis-Script rdf:Class .
+:Machine-Learning-Script rdf:Class .
 
 #--------Sources------------#
 :Source a rdf:Class .
@@ -24,62 +25,133 @@
     :DSSP rdfs:subClassOf :Databanks .
 
 
-:DataFolder a :Raw-Data-Doc ;
+:found_bmrb_ids a :Data-Doc ;
+  :outputOf :Data_Downloads ;
+  rdfs:comment "contains all BMRB IDs which have a spectra" ;
+  :date "20230102" .
+:Pressure_Filter a :Analysis-Script ;
+  :usedAsInput :updated_measurement_conditions ;
+  rdfs:comment "filters BMRB IDs based on their pressure values - only 1 ATM is included" ;
+  :date "20230102" .
+:Secondary_Structure_Filter a :Analysis-Script ;
+  :usedAsInput :secondary_structure ;
+  rdfs:comment "filters BMRB IDs based on the count of secondary structure elements to predict in the Q8 state - every BMRB Id with more then 9 values to predict is included" ;
+  :date "20230201" .
+:peak_matrixes_10x10 a :Data-Doc ;
+  :outputOf :Binning_Data ;
+  rdfs:comment "binned count matrix spectra with a 10x10 grid" ;
+  :date "20230102" .:Filter_RNA_DNA a :Analysis-Script ;
   :dataFrom :PDB ;
-  rdfs:comment "Downloads from PDB-Archivs via 'rsync -rlpt -v -z --delete --port=33444 \rsync.rcsb.org::ftp_data/structures/divided/nmr_chemical_shifts/ ../Data'. Contain BMRB and PDB IDs." ;
-  :webExample "https://www.wwpdb.org/ftp/pdb-ftp-sites" ;
-  :located "Data/" ;
-  :date "20221108" .
-:First-Data-Inspection a :Analysis-Script ;
+  :usedAsInput :found_bmrb_ids ;
+  :usedAsInput :BMRB_PDB_ids ;
+  :usedFunctionOf :Data_Downloads ;
+  rdfs:comment "Distinguishes between Proteins and RNA/DNA - BMRB IDs which include RNA/DNA are removed" ;
+  :date "20220102" .:Chemical_Shift_Filter a :Analysis-Script ;
   :usedAsInput :chemical_shifts ;
-  :usedAsInput :struc_and_cond ;
-  rdfs:comment "First Inspection of the chemical_shifts and struc_and_conda dataframe to analyse data and find 'wrong' data" ;
-  :located "Scripts/Data-Generator/First-Data-Inspection.ipynb" ;
-  :date "20221117" .
-:chemical_shifts a :Data-Doc ;
-  :outputOf :Data-Grabber2 ;
-  :located "Scripts/Data-Generator/chemical_shifts.pkl" ;
-  rdfs:comment "contains IDs and annotated chemical shifts of macromolecules" ;
-  :date "20221117" .
-:overview-sec-str a :Data-Doc ;
-  :webExample "https://bmrb.io/data_library/summary/index.php?bmrbId=30691" ;
-  :webExample "https://www.ncbi.nlm.nih.gov/Structure/pdb/6V1W" ;
-  :webExample "https://www.rcsb.org/structure/6V1W" ;
-  :webExample "https://www.ncbi.nlm.nih.gov/Structure/pdb/6V1N" ;
-  :outputOf :Data-Grabber ;
-  :located "Scripts/Data-Generator/overview-sec-str.txt" ;
-  rdfs:comment "contains IDs and secondary structure information of makromolecules" ;
-  :date "20221108" .
-:struc_and_cond a :Data-Doc ;
-  :outputOf :Data-Grabber2 ;
-  :located "Scripts/Data-Generator/struc_and_cond.pkl" ;
-  rdfs:comment "contains IDs and secondary structure informations and measure conditions of macromolecules" ;
-  :date "20221117" .
-:Data-Grabber a :Data-Generator ;
+  rdfs:comment "Displays the distribution of the shift values for N and H and deletes to BMRB IDs with to high shift values" ;
+  :date "20230102" .
+:peak_matrix_corresponding_BMRB_ID a :Data-Doc ;
+  :outputOf :Binning_Data ;
+  rdfs:comment "corresponding BMRD IDs for the peak matrixes to check the order for the combination with the targets" ;
+  :date "20230103" .
+:filtered_by_protein a :Data-Doc ;
+  :outputOf :RNA_DNA_Filter ;
+  rdfs:comment "includes the BMRB IDs filtered by the RNA-DNA-Filter" ;
+  :date "20230102" .
+:filtered_by_ph a :Data-Doc ;
+  :outputOf :PH_Filter ;
+  rdfs:comment "includes the BMRB IDs filtered by the PH-Filter" ;
+  :date "20230102" .
+:Q8_percentages a :Data-Doc ;
+  :outputOf :Target_Q_states ;
+  rdfs:comment "Percentage appearance of the secondary structure Q8 states" ;
+  :date "202301013" .
+:filtered_by_sec_structure a :Data-Doc ;
+  :outputOf :Secondary_Structure_Filter ;
+  rdfs:comment "includes the BMRB IDs filtered by the Secondary-Structure-Filter" ;
+  :date "20230102" .
+:Temperature_Filter a :Analysis-Script ;
+  :usedAsInput :updated_measurement_conditions ;
+  rdfs:comment "filters BMRB Ids based on their temperature values - everthing between 273 and 310 is included" ;
+  :date "20230102" .
+:filtered_by_shifts a :Data-Doc ;
+  :outputOf :Chemical_Shift_Filter ;
+  rdfs:comment "includes the BMRB IDs filtered by the Shift-Filter" ;
+  :date "20230102" .
+:filtered_by_pressure a :Data-Doc ;
+  :outputOf :Pressure_Filter ;
+  rdfs:comment "includes the BMRB IDs filtered by the Pressure-Filter" ;
+  :date "20230102" .
+:Data_Downloads a :Data-Generator ;
+  :dataFrom :DSSP ;
   :dataFrom :PDB ;
   :dataFrom :BMRB ;
-  :dataFrom :NCBI ;
-  :usedAsInput :DataFolder ;
-  rdfs:comment "downloads HSQC spectra and secondary structure of protein" ;
-  :located "Scripts/Data-Generator/Data-Grabber.py" ;
-  :date "20221107" .
-
-
-:Data-Preprocessor a :Data-Generator ;
-  :usedAsInput :chemical-shifts ;
-  :usedAsInput :struc-and-cond ;
-  rdfs:comment "NOT DONE YET. transforms raw data into uniform data and filters data within a certain condition range" ;
-  :located "Scripts/Data-Generator/Data-Preprocessor.py" ;
-  :date "20221125" .
-:Many-Shift-Tables a :Data-Doc ;
-  :outputOf :Data-Grabber2 ;
-  rdfs:comment "NOT DONE YET. Shows PDB ID of Files with more than one chemical shift table. This function will possibly be outcommented." ;
-  :located "Scripts/Data-Generator/Many-Shift-Tables.txt" ;
-  :date "20221125" .
-:Data-Grabber2 a :Data-Generator ;
+  :usedAsInput :BMRB_PDB_ids ;
+  rdfs:comment "Downloads all properties for a certain BMRB/PDB ID pair from certain databases" ;
+  :date "20220102" .
+:updated_measurement_conditions a :Data-Doc ;
   :dataFrom :PDB ;
+  :dataFrom :BMRB ;
+  :outputOf :Data_Downloads ;
+  rdfs:comment "consist of all measurement conditions from BMRB and completed by missing data from PDB" ;
+  :date "20230102" .
+:secondary_structure a :Data-Doc ;
   :dataFrom :DSSP ;
-  :usedAsInput :DataFolder ;
-  rdfs:comment "downloads chemical shifts for different atoms as well as conditions and secondary structur; data generated is not raw data, data transformation is included like changes from ATM to 1 (pressure)" ;
-  :located "Scripts/Data-Generator/Data-Grabber2.py" ;
-  :date "20221117" .
+  :outputOf :Data_Downloads ;
+  rdfs:comment "contains secondary structure information for all BMRB IDs" ;
+  :date "20232102" .
+  
+:filtered_by_temperature a :Data-Doc ;
+  :outputOf :Temperature_Filter ;
+  rdfs:comment "includes the BMRB IDs filtered by the Temperature-Filter" ;
+  :date "20230102" .
+:aggregated_bmrd_ids a :Data-Doc ;
+  :outputOf :ID_Aggregation ;
+  rdfs:comment "csv with the intersection of all BMRB Ids from the filter programs" ;
+  :date "20230102" .
+:measurement_conditions a :Data-Doc ;
+  :dataFrom :BMRB ;
+  :outputOf :Data_Downloads ;
+  rdfs:comment "measurement conditions from the Star file from BMRB" ;
+  :date "20230102" .
+:PH_Filter a :Analysis-Script ;
+  :usedAsInput :updated_measurement_conditions ;
+  rdfs:comment "filters BMRB IDs based on their pH values - BMRB ids with a pH value in the range between 5 and 8 are included" ;
+  :date "20230102" .:BMRB_PDB_ids a :Data-Doc ;
+  :downloadedFrom "https://bmrb.io/ftp/pub/bmrb/nmr_pdb_integrated_data/adit_nmr_matched_pdb_bmrb_entry_ids.csv" ;
+  :rdfs:comment "downloaded csv datasheet from BMRB database with BMRB IDs and there corresponding PDB IDs - Those BMRB IDs build the fundament for the entire project" ;
+  :date "20230102" .
+:Target_Q_states a :Data-Generator ;
+  :usedAsInput :secondary_structure ;
+  :usedFunctionFrom :Binning_Data ;
+  rdfs:comment "calculates the percentage of the filtered proteins for the Q3 and Q8 state" ;
+  :date "20230103" .
+
+:Binning_Data a :Data-Generator ;
+  :usedAsInput :chemical_shifts ;
+  :usedAsInput :aggregated_bmrd_ids ;
+  rdfs:comment "bins the N-HSQC spectra with a given grid size" ;
+  :date "20230102" .
+:Q3_percentages a :Data-Doc ;
+  :outputOf :Target_Q_states ;
+  rdfs:comment "Percentage appearance of the secondary structure Q3 states" ;
+  :date "202301013" .:ID_Aggregation a :Data-Generator ;
+  :usedAsInput :filtered_by_ph ;
+  :usedAsInput :filtered_by_pressure ;
+  :usedAsInput :filtered_by_protein ;
+  :usedAsInput :filtered_by_sec_structure ;
+  :usedAsInput :filtered_by_shifts ;
+  :usedAsInput :filtered_by_temperature ;
+  rdfs:comment "builds the intersection of all filtered data" ;
+  :date "20230102" .
+:Linear_Regression a :Machine-Learning-Script ;
+  :usedAsInput :peak_matrixes ;
+  :usedAsInput :Q3_states_percentage ;
+  :usedAsInput :Q8_states_percentage ;
+  rdfs:comment "makes a linear regression for the percentage for the Q8 and Q3 states based on the count peaks matrixes" ;
+  :date "20230103" .
+:chemical_shifts a :Data-Doc ;
+  :dataFrom :BMRB ;
+  :outputOf :Data_Downloads ;
+  rdfs:comment "includes all shift tables for the BMRB ID" ;
+  :date "20230102" .

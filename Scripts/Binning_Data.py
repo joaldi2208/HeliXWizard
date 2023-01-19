@@ -5,7 +5,8 @@ import pickle
 def get_prefiltered_ids(unfiltered_chemical_shifts):
     """return only dictionary entries for those you fullfill the filter requirements from the earlier filter stage."""
     
-    with open("aggregated_bmrd_ids.txt", "r") as infile:
+    #with open("aggregated_bmrd_ids.txt", "r") as infile: # here changeable
+    with open("2006_filtered_by_shifts.txt", "r") as infile: # here changeable
         filtered_IDs = infile.read().replace("\n","").split(",")
         filtered_IDs = [int(bmrb_id) for bmrb_id in filtered_IDs]
 
@@ -69,11 +70,11 @@ def generate_count_peaks_matrix(binned_H_shifts, binned_N_shifts, H_num_1D_grid,
 if __name__=='__main__':
     # you need also to read a file of the bmrb ids that were filtered out
     # and then take only those for the binning
-    H_shift_max = 15
-    H_shift_min = 5
+    H_shift_max = 11
+    H_shift_min = 6
 
-    N_shift_max = 150
-    N_shift_min = 80
+    N_shift_max = 140
+    N_shift_min = 90
 
     #num_1D_grid = int(input("Number of 1D grids: "))
     H_num_1D_grid = 10
