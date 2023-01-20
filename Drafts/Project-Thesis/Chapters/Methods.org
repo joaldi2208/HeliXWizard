@@ -1,0 +1,35 @@
+The method section is divided into three different parts.
+The first part is foccused on the data acquisition, the second part is foccused on data preprocessing/filtering and the third and last part is about the used tool for the secondary structure prediction.
+*Data acquisition*: All downloaded proteins are based on a file "Matched submitted BMRB-PDB entries" (see attachments:https://bmrb.io/search/) that include BMRB and PDB IDs from 8298 proteins.
+Two different PDB entries can have the same BMRB ID, because the PDB contains proteins from ... while the BMRB only contains ...(ask chatgpt).
+The first PDB ID entry in the "Matched submitted BMRB-PDB entries" file correspond to the measured spectra from the BMRB ID and therefore for all duplicated PDB IDs only the first only was kept in the data set.
+Based on this dataset(Upon), the second step of the data acquisition was to download the .csv file of the protein backbone for the BMRB webpage. Not for all BMRB IDs a spectra could be found.
+All IDs without a spectra were removed from the dataset.
+The next step downloaded the secondary structure of the protein.
+DSSP is the common tool to determine the secondary structure of the protein, which returns a list of all the secondary structure elements.
+The last step of the data aquisition included the downloading of the measurement conditions (Temperature, pressure, pH) from the nmrstar file or the PDB database. With the help of an REGEX expression the measurement conditions were look up with the following order: NMR-STAR2.0 file, NMR-STAR3.0 file and PDB database. The order for the NMR-STAR files was arbitrary while the PDB database results showed more unclear data like different pressure values for one measurement and was more inconsistent in the units. Therefore found measurement conditions weren't replaced.
+The result from the data aquisition step were three files containing the peak list, the secondary structure information and the measurement conditions if they could be found.
+
+In the paper from moreau et. al. it is mentioned that 72 were used for the prediction of the secondary structure of proteins and that they were found in the PDB database and the peaks were downloaded from the NMR-STAR files.
+To reproduce this dataset all the BMRB entries with an deposition date before 25.09.2005 (publication of the paper) were filtered.
+Since no further information is given of the data used, a few extra filtering steps were included to only work with high quality?? data.
+
+*Data Preproccessing/Filtering*: Based on five criteria the data was filtered: Chemical shifts, Temperature, pressure, pH, (secondary structure).
+Regarding the showed figures in the publication the no proteins has peaks with an N-shift greater then ... and smaller then ...The upper limit for the H-shifts were at ... and the lower limit at ... All proteins with peaks outside these barrieres were removed from the dataset. The other limits including the peak limit can be found in table X.
+
+| Filter      | Lower Limit | Upper Limit |
+|-------------+-------------+-------------|
+| Temperature |         273 |         313 |
+| Pressure    |           1 |           1 |
+| pH          |           5 |           8 |
+| N-Shift     |             |             |
+| H-Shift     |             |             |
+
+For special cases were for example different pressure values were found, I decided from case to case if the data should be included in the dataset. Normally only if all measurement values lied in the given range were included else the were removed. The special cases can be looked up in the jupyter notebooks (Filter ....).
+
+After the filtering the intersection of the measurement filters, the chemical shift filter and the date before 2006 filter were used for futher steps.
+
+*Binning and secondary structure calculation:*
+* Data
+From the list the percentage of secondary structure could be calculated.
+

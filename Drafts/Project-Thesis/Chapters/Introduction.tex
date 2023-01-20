@@ -1,0 +1,44 @@
+% Created 2023-01-19 Thu 17:11
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\author{Jonas Dietrich}
+\date{\today}
+\title{}
+\hypersetup{
+ pdfauthor={Jonas Dietrich},
+ pdftitle={},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 27.2 (Org mode 9.4.4)}, 
+ pdflang={English}}
+\begin{document}
+
+\tableofcontents
+
+Protein secondary structure prediction is a crucial step in understanding the three-dimensional structure of proteins and its relation to their function. Nuclear magnetic resonance (NMR) spectroscopy is a powerful tool for studying protein conformation and dynamics, but the process of assigning NMR spectra to specific residues can be time-consuming and labor-intensive.(from ChatGPT)
+Especially for proteins in solution, N-HSQC spectra can provide information about the proteins dynamics and conformation. These spectra are relatively easy to obtain and can be used to study large molecule or even entire protein complexes. In addtion to the given advantages of N-HSQC spectra for protein analysis, they provide a unique pattern of peaks for each individual protein also known as fingerprint spectra.
+The combination of unique identifictions and easily to obtain makes N-HSQC spectra an optimal tool for analyzing and predicting secondary protein stuctures.
+Based on the idea that distinct patterns in NMR spectra lead to different types of secondary structure (alpha helix, beta sheet and random coil) and therefore allow the prediction of secondary structures of proteins.
+In the paper "Prediction of the amount of secondary structure of proteins using unassigned NMR spectra: a tool for target selection in structural proteomics" Moreau et. al. developed back in 2006 a tool called PASSNMR to predict the secondary structure of a protein based on 2D N-HSQC as well as with C-HSQC spectra.
+
+
+
+The result showed an accuracy of for the prediction around 85\% when combining N-HSQC and C-HSQC. When only using N-HSQC spectra the accuary for the prediction droped to 70\%.
+For predicting the
+
+
+In this project I try to reproduce the results from the paper from Moreau et. al. and extend the number of proteins to improve the predictions.
+\end{document}
