@@ -6,7 +6,7 @@ def get_prefiltered_ids(unfiltered_chemical_shifts):
     """return only dictionary entries for those you fullfill the filter requirements from the earlier filter stage."""
     
     #with open("aggregated_bmrd_ids.txt", "r") as infile: # here changeable
-    with open("2006_filtered_by_shifts.txt", "r") as infile: # here changeable
+    with open("all_with_filtered_by_shifts_constraints.txt", "r") as infile: # here changeable
         filtered_IDs = infile.read().replace("\n","").split(",")
         filtered_IDs = [int(bmrb_id) for bmrb_id in filtered_IDs]
 
