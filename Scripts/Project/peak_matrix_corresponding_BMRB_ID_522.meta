@@ -1,0 +1,5 @@
+
+:peak_matrix_corresponding_BMRB_ID a :Data-Doc ;
+  :outputOf :Binning_Data ;
+  rdfs:comment "corresponding BMRD IDs for the peak matrixes to check the order for the combination with the targets" ;
+  :date "20230103" .

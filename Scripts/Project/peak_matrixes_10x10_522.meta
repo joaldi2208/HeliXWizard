@@ -1,0 +1,5 @@
+
+:peak_matrixes_10x10 a :Data-Doc ;
+  :outputOf :Binning_Data ;
+  rdfs:comment "binned count matrix spectra with a 10x10 grid" ;
+  :date "20230102" .
