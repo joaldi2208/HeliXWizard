@@ -1,12 +1,11 @@
-from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import RepeatedKFold
 from scipy.stats import pearsonr
 from sklearn.metrics import mean_squared_error as mae
-from sklearn.ensemble import RandomForestRegressor
 
 import random
 import numpy as np
 
+from Simple_Linear_Regression_small import make_Linear_Regression
 #random.seed(73)
 
 def reshape_to_1D(matrix):
@@ -30,76 +29,8 @@ def normalization(reshaped_matrix):
 
 
 
-def make_Linear_Regression(kf, normalized_matrix, Q3_percentage):
-    """makes a 10 fold cv with a linear regression model"""
-    
-    r2_ = []
-    pearson_corr_ = []
-    rmse_ = []
-
-    
-    for i, (train_index, test_index) in enumerate(kf.split(Q3_percentage)):
-
-        #print(i)
-        #print(len(train_index))
-        #print(len(test_index))
-        reg = LinearRegression().fit(normalized_matrix[train_index], Q3_percentage[train_index])
-        r2 = reg.score(normalized_matrix[train_index], Q3_percentage[train_index])
-        predictions = reg.predict(normalized_matrix[test_index])
-
-        predictions = predictions.ravel()
-        measurements = Q3_percentage[test_index].ravel()
-
-        pearson_corr = pearsonr(measurements, predictions)
-        rmse = mae(measurements, predictions, squared=False)
-
-        
-        print("R2: ", r2)
-        print("Pearson Corr.: ", pearson_corr[0])
-        print("RMSE: ", rmse)
-        print("--------------------------------")
-        print()
-
-        r2_.append(r2)
-        pearson_corr_.append(pearson_corr[0])
-        rmse_.append(rmse)
-
-
-    print(sum(pearson_corr_)/len(pearson_corr_))
-
-def make_Random_Forest(kf, normalized_matrix, Q3_percentage):
-    """makes a 10 fold cv with a linear regression model"""
-    
-    r2_ = []
-    pearson_corr_ = []
-    rmse_ = []
-
-    
-    for i, (train_index, test_index) in enumerate(kf.split(Q3_percentage)):
-
-        print(i, "Random Forest")
-        #print(len(train_index))
-        #print(len(test_index))
-        reg = RandomForestRegressor().fit(normalized_matrix[train_index], Q3_percentage[train_index])
-        print("he")
-        r2 = reg.score(normalized_matrix[train_index], Q3_percentage[train_index])
-        predictions = reg.predict(normalized_matrix[test_index])
-
-        predictions = predictions.ravel()
-        measurements = Q3_percentage[test_index].ravel()
-
-        pearson_corr = pearsonr(measurements, predictions)
-        rmse = mae(measurements, predictions, squared=False)
-        print("R2: ", r2)
-        print("Pearson Corr.: ", pearson_corr[0])
-        print("RMSE: ", rmse)
-        print("--------------------------------")
-
 def get_data_subset(Q3_percentage):
     """gets subset of data"""
-    #random_samples = random.sample(range(len(counts_peaks_matrixes)), 100)
-    #subset_counts_peaks_matrixes = [counts_peaks_matrixes[num] for num in random_samples]
-    #Q3_percentage = [Q3_percentage[num] for num in random_samples]
 
     helix_percentage = [[sec[2]] for sec in Q3_percentage]
     sheet_percentage = [[sec[1]] for sec in Q3_percentage]
@@ -113,25 +44,29 @@ def prepare_matrix(subset_counts_peaks_matrixes):
     normalized_matrix = normalization(reshaped_matrix)
     return normalized_matrix
     
-if __name__=="__main__":
+
+def simple_dataset_big():
     with open("peak_matrixes_10x10_4087.npy", "rb") as infile:
         counts_peaks_matrixes = np.load(infile)
-        print(len(counts_peaks_matrixes))
 
     with open("Q3_percentage_4087.npy", "rb") as infile:
         Q3_percentage = np.load(infile)
-        print(len(Q3_percentage))
-
-    print("SIMPLE LINEAR REGRESSION BIG")
-    for i in range(2):
-        print(i, ". run ...")
-        helix_percentage, sheet_percentage, coil_percentage = get_data_subset(Q3_percentage)
-        normalized_matrix = prepare_matrix(counts_peaks_matrixes)
-
-   
-        rkf = RepeatedKFold(n_splits=4, n_repeats=4)
-        #make_Linear_Regression(rkf, np.array(normalized_matrix), np.array(sheet_percentage))
-        make_Random_Forest(rkf, np.array(normalized_matrix), np.array(helix_percentage))
-
-
         
+    helix_percentage, sheet_percentage, coil_percentage = get_data_subset(Q3_percentage)
+    normalized_matrix = prepare_matrix(counts_peaks_matrixes)
+
+    return helix_percentage, sheet_percentage, coil_percentage, normalized_matrix
+
+def simple_linear_regression_big(sec_structure, normalized_matrix):
+    rkf = RepeatedKFold(n_splits=4, n_repeats=4)
+    predictions, measurements, pearson, rmse, r2 = make_Linear_Regression(rkf, np.array(normalized_matrix), np.array(sec_structure))
+
+    return measurements, predictions, pearson, rmse, r2
+
+if __name__=="__main__":
+    helix_percentage, sheet_percentage, coil_percentage, normalized_matrix = simple_dataset_big()
+    for i in range(10):
+        measurements, predictions, pearson, rmse, r2 = simple_linear_regression_big(helix_percentage, normalized_matrix)
+        measurements, predictions, pearson, rmse, r2 = simple_linear_regression_big(sheet_percentage, normalized_matrix)
+        measurements, predictions, pearson, rmse, r2 = simple_linear_regression_big(coil_percentage, normalized_matrix)
+  
