@@ -1,35 +1,91 @@
-The method section is divided into three different parts.
-The first part is foccused on the data acquisition, the second part is foccused on data preprocessing/filtering and the third and last part is about the used tool for the secondary structure prediction.
-*Data acquisition*: All downloaded proteins are based on a file "Matched submitted BMRB-PDB entries" (see attachments:https://bmrb.io/search/) that include BMRB and PDB IDs from 8298 proteins.
-Two different PDB entries can have the same BMRB ID, because the PDB contains proteins from ... while the BMRB only contains ...(ask chatgpt).
-The first PDB ID entry in the "Matched submitted BMRB-PDB entries" file correspond to the measured spectra from the BMRB ID and therefore for all duplicated PDB IDs only the first only was kept in the data set.
-Based on this dataset(Upon), the second step of the data acquisition was to download the .csv file of the protein backbone for the BMRB webpage. Not for all BMRB IDs a spectra could be found.
-All IDs without a spectra were removed from the dataset.
-The next step downloaded the secondary structure of the protein.
-DSSP is the common tool to determine the secondary structure of the protein, which returns a list of all the secondary structure elements.
-The last step of the data aquisition included the downloading of the measurement conditions (Temperature, pressure, pH) from the nmrstar file or the PDB database. With the help of an REGEX expression the measurement conditions were look up with the following order: NMR-STAR2.0 file, NMR-STAR3.0 file and PDB database. The order for the NMR-STAR files was arbitrary while the PDB database results showed more unclear data like different pressure values for one measurement and was more inconsistent in the units. Therefore found measurement conditions weren't replaced.
-The result from the data aquisition step were three files containing the peak list, the secondary structure information and the measurement conditions if they could be found.
+#+OPTIONS: toc:nil 
+#+TITLE: Material and Methods
+#+LATEX_HEADER: \usepackage{todonotes}
+#+LATEX_HEADER: \usepackage{xcolor}
 
-In the paper from moreau et. al. it is mentioned that 72 were used for the prediction of the secondary structure of proteins and that they were found in the PDB database and the peaks were downloaded from the NMR-STAR files.
-To reproduce this dataset all the BMRB entries with an deposition date before 25.09.2005 (publication of the paper) were filtered.
-Since no further information is given of the data used, a few extra filtering steps were included to only work with high quality?? data.
 
-*Data Preproccessing/Filtering*: Based on five criteria the data was filtered: Chemical shifts, Temperature, pressure, pH, (secondary structure).
-Regarding the showed figures in the publication the no proteins has peaks with an N-shift greater then ... and smaller then ...The upper limit for the H-shifts were at ... and the lower limit at ... All proteins with peaks outside these barrieres were removed from the dataset. The other limits including the peak limit can be found in table X.
 
+* Data acquisition
+
+The goal of data collection was to create three files containing the peak list, secondary structure information, and measurement conditions.
+
+Protein IDs were downloaded from the file "Matched submitted BMRB-PDB entries in one deposition session" (https:/bmrb.io/search/, On GitHub: BMRB_PDB_ids.csv) from the BMRB website.
+8257 entries were found (11/2022).
+Duplicate BMRB IDs were removed such that only the BMRB ID that occurred first remained in the dataset.
+With the new dataset without duplicates, all N-HSQC backbone spectra were downloaded from the BMRB website.
+Next, the secondary structure information of the proteins was downloaded from a server running the program DSSP cite:&touw2015series cite:&kabsch1983dictionary.
+The final step of data acquisition was to download the measurement conditions (temperature, pressure, pH) from the NMRStar file or PDB database.
+On first review, the NMRStar file showed clearer results and more consistency in the use of units and was therefore used first for the measurement conditions.
+In addition to NMRStar2.0, NMRStar3.0 files were also used.
+The missing measurement conditions were filled by the found conditions from the PDB database.
+Before the actual filtering step, all entries without N-HSQC spectra, secondary structure information, or not all three measurement conditions were removed from the data set in advance.
+
+* Data Filtering
+Because the 72 proteins used in the reference article were not specified with PDB ID, I used the submission date of the paper as a filter so that all entries with a submission date in the BMRB database before 2005/09/25 were also saved in a separate file to create a second data set.
+
+The data were filtered based on five criteria: chemical shifts, temperature, pressure, pH, and secondary structure.
+According to the figures in the Moreau et. al. publication, no protein has peaks with N-shift greater than 140 ppm and less than 90 ppm. The upper limit for H-shifts was 11 ppm and the lower limit was 6 ppm.
+All proteins with peaks outside these ranges were removed from the data set.
+The temperature, pressure, and pH properties were not mentioned in the article, but apparently reasonable limits were set to ensure high quality of the data set (Tab. [[filter_limits]]).
+The temperature range was from 273 K to 310 K, and thus from nearly frozen to body temperature, ensuring that no denatured proteins were included cite:&baxter1997temperature.
+For pressure, only measurements at atomspheric pressure (ATM) were used to ensure the same measurement conditions for all samples.
+The pH range was from 5 to 8, again to have the proteins in their usual environment and highest stability cite:&yang1993ph cite:&talley2010ph.
+
+Only the cases where all filters were successfully applied were included in the data set.
+
+#+CAPTION: Used filter setting for the data preprocessing step.
+#+NAME: filter_limits
 | Filter      | Lower Limit | Upper Limit |
 |-------------+-------------+-------------|
-| Temperature |         273 |         313 |
-| Pressure    |           1 |           1 |
-| pH          |           5 |           8 |
-| N-Shift     |             |             |
-| H-Shift     |             |             |
+| Temperature | 273 K       | 310 K       |
+| Pressure    | 1 bar       | 1 bar       |
+| pH          | 5           | 8           |
+| N-Shift     | 90 ppm      | 140 ppm     |
+| H-Shift     | 6 ppm       | 11 ppm      |
 
-For special cases were for example different pressure values were found, I decided from case to case if the data should be included in the dataset. Normally only if all measurement values lied in the given range were included else the were removed. The special cases can be looked up in the jupyter notebooks (Filter ....).
+A special filter was used for the secondary structure elements.
+The three-level secondary structure consisted of 4 different structures: helix, sheet, coil and polyproline helix.
+The DSSP translation table for the eight-level to the three-level secondary structure can be found in Tab. [[Trans_sec_states]].
 
-After the filtering the intersection of the measurement filters, the chemical shift filter and the date before 2006 filter were used for futher steps.
+#+CAPTION: Translation table from eight to three-state secondary structure.
+#+NAME: Trans_sec_states
+| Appearance overall | Appearance proteins | 8(9)-state | 3(4)-state               |
+|     (sum = 651135) |        (sum = 5803) |      |                          |
+|--------------------+---------------------+------+--------------------------|
+|             162591 |                5801 | -    | \textcolor{cyan}{C}      |
+|              12053 |                2396 | G    | \textcolor{teal}{H}      |
+|              67781 |                5592 | T    | \textcolor{cyan}{C}      |
+|             117178 |                3903 | E    | \textcolor{purple}{E}    |
+|              79357 |                5657 | S    | \textcolor{cyan}{C}      |
+|             196269 |                4748 | H    | \textcolor{teal}{H}      |
+|               5807 |                2195 | B    | \textcolor{purple}{E}    |
+|               7073 |                1828 | P    | \textcolor{orange}{P}    |
+|               3026 |                 470 | I    | \textcolor{cyan}{C}      |
 
-*Binning and secondary structure calculation:*
-* Data
-From the list the percentage of secondary structure could be calculated.
+Since secondary structure calculation tools are not mentioned in Moreau et al. but the prediction of the three-level secondary structures helix, sheet, and coil, all proteins with polyproline helix were filtered out from the dataset.
+After the filtering process, the number of entries in the database was 2841 and 401 with the deposition date filter applied.
+	
+* Binning, Secondary Structure and Quadrant Correlation
+The binning was done using the previously established filter limits for N-shifts and H-shifts of 90 ppm to 140 ppm and 6 ppm to 11 ppm, respectively.
+The spectra were then divided into 10x10 equally spaced quadrants, with each quadrant covering a range of 5 ppm by 0.5 ppm.
+Within each quadrant, the number of peaks was counted and stored in a matrix.
+
+For secondary structure content, the percent occurrence of helix, sheet, and coil was calculated for each protein.
+
+For the quadrant correlation calculation, 100 new data sets were created, with each data set corresponding to a specific quadrant position within the original 10x10 matrices.
+For each new data set and corresponding secondary structure content, the correlation coefficient was calculated, resulting in a correlation coefficient for each quadrant in the N-HSQC spectra.
+
+* Model training
+Secondary structure prediction was performed using two different approaches and two different training data sets, corresponding to four different linear regression models.
+One approach used as input only quadrants that had a correlation coefficient higher than 0.3 or lower than -0.3 for any secondary structure element, as done by Moreau et. al.
+In the second approach, all quadrants were used regardless of their correlation coefficient.
+For both approaches, the number of peaks in the quadrant was normalized.
+Then, a 100 times 10-fold cross-validation was used to create 1000 models, each of which predicted the test data set with 488 protein entries.
+An additional change was made to the models trained on the small data set consisting only of protein entries prior to 2006.
+Instead of using all 401 protein entries, during cross-validation 72 proteins were randomly selected for the model training to mimic the model from the reference article.
+
+Model creation, filtering, and downloading were set up and performed using the Python libraries sklearn for linear regression and cross-validation cite:&scikit-learn and scipy.stats for metrics calculation cite:&2020SciPy-NMeth.
+All downloaded data are freely available online in the BMRB and PDB databases.
+Due to request problems on the DSSP online server, a separate server was initialized and used to download the secondary structure content.
+The codes used to carry out this work is availably on github at joaldi2208/HelixWizard.
 

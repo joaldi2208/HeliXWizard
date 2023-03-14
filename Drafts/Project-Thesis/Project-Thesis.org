@@ -1,11 +1,35 @@
+#+TITLE: Testing the Potential of N-HSQC Spectra for Secondary Structure Prediction of Proteins
+#+AUTHOR: Jonas Dietrich
 
+#+LANGUAGE: en
+#+OPTIONS: title:nil toc:nil
+#+OPTIONS: tasks:nil ^:nil
+
+#+INCLUDE: "./Preamble.org"
+
+#+INCLUDE: "./Chapters/Titlepage.org"
+\tableofcontents
+\newpage
 * Introduction
-* Methods
+#+INCLUDE: "./Chapters/Introduction.org"
+\newpage
+* Material and Methods
+#+INCLUDE: "./Chapters/Methods.org"
+\newpage
 * Results
+#+INCLUDE: "./Chapters/Datasets.org"
+#+INCLUDE: "./Chapters/Results.org"
+\newpage
 * Discussion
-* Conclusion
+#+INCLUDE: "./Chapters/Discussion.org"
+\newpage
 * Outlook
-
-- References
-- Appendices
-- Acknowledgement
+#+INCLUDE: "./Chapters/Outlook.org"
+\newpage
+\printbibliography[heading=bibnumbered,title=References]
+\newpage
+* Appendix
+#+INCLUDE: "./Chapters/Appendix.org"
+\newpage
+* Acknowledgement
+There will be an acknowledgement in the Master Thesis.

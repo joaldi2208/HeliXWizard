@@ -6,7 +6,7 @@ def get_prefiltered_ids(unfiltered_chemical_shifts):
     """return only dictionary entries for those you fullfill the filter requirements from the earlier filter stage."""
     
     #with open("aggregated_bmrd_ids.txt", "r") as infile: # here changeable
-    with open("all_with_filtered_by_shifts_constraints.txt", "r") as infile: # here changeable
+    with open("Project/big_dataset_thesis.txt", "r") as infile: # here changeable
         filtered_IDs = infile.read().replace("\n","").split(",")
         filtered_IDs = [int(bmrb_id) for bmrb_id in filtered_IDs]
 
@@ -76,9 +76,10 @@ if __name__=='__main__':
     N_shift_max = 140
     N_shift_min = 90
 
-    #num_1D_grid = int(input("Number of 1D grids: "))
-    H_num_1D_grid = 10
-    N_num_1D_grid = 10
+    H_num_1D_grid = int(input("Number of H-1D grids: "))
+    N_num_1D_grid = int(input("Number of H-1D grids: "))
+    #H_num_1D_grid = 10
+    #N_num_1D_grid = 100
 
     H_binsize = (H_shift_max - H_shift_min) / H_num_1D_grid
     N_binsize = (N_shift_max - N_shift_min) / N_num_1D_grid
@@ -103,7 +104,7 @@ if __name__=='__main__':
     #print(binned_N_shifts[0])
 
     count_peaks_matrixes = generate_count_peaks_matrix(binned_H_shifts, binned_N_shifts, H_num_1D_grid, N_num_1D_grid)
-    print(count_peaks_matrixes[222])
+    #print(count_peaks_matrixes[222])
     print(len(count_peaks_matrixes))
 
     bmrb_ids = list(chemical_shifts)

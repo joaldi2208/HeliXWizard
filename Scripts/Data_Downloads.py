@@ -1,3 +1,8 @@
+# Downloads N-HSQC spectra from the BMRB database
+# Downloads secondary structure information from a DSSP server
+# Downloads measurement conditions from the BMRB database and the PDB database
+## The used BMRB-PDB ids are from the following webpage: https://bmrb.io/search/ --> 'Matched submitted BMRB-PDB entries'
+
 import pandas as pd
 
 import pycurl
@@ -5,11 +10,9 @@ import io
 import certifi
 
 import requests
-
 from collections import Counter
 
 import re
-
 import json
 import pickle
 
@@ -163,7 +166,7 @@ def get_secondary_structure(bmrb_ids: list, dssp_files: list)-> dict:
 #       MEASUREMENT CONDITION INFORMATION
 ##############################################
 
-def find_conditions(webpage, database, bmrb_id=None):
+def find_conditions(webpage: str, database: str, bmrb_id=None) -> list:
     """finds the measurement conditions on the BMRB webpage based on a given condition id or on the PDB header file. The given database name decides which regex to use"""
 
     if database == "BMRB":
@@ -182,7 +185,7 @@ def find_conditions(webpage, database, bmrb_id=None):
         return conditions
 
     
-def get_bmrb_measurement_conditions(bmrb_ids):
+def get_bmrb_measurement_conditions(bmrb_ids: list) -> dict:
     """copies the measurement conditions from the BMRB webpage"""
 
     measurement_conditions = {}
@@ -199,7 +202,7 @@ def get_bmrb_measurement_conditions(bmrb_ids):
     return measurement_conditions
         
 
-def get_pdb_measurement_conditions(pdb_ids, bmrb_ids, measurement_conditions):
+def get_pdb_measurement_conditions(pdb_ids: list, bmrb_ids: list, measurement_conditions: dict) -> dict:
     """copies the measurement conditions from the PDB file header and adds it to the existing measurement conditions"""
 
     for bmrb_id, pdb_id in tqdm(zip(bmrb_ids, pdb_ids), total=len(bmrb_ids), desc="Downloading PDB conditions..."):
@@ -239,10 +242,7 @@ if __name__ == '__main__':
     
         found_bmrb_ids = chemical_shifts.keys()
         with open("found_bmrb_ids.txt", "w") as outfile:
-            for bmrb_id in found_bmrb_ids:
-                outfile.write(f"{bmrb_id},")
-                # delete last comma or
-                #replace all of it with the expressions used in the filter scripts
+            outfile.writelines(",".join(map(str, found_bmrb_ids)))
 
 
     elif "shift" not in args:

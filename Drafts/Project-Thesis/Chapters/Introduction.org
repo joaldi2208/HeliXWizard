@@ -1,13 +1,30 @@
+Secondary structure prediction is a crucial step in understanding the structure of proteins and their function.
+Current de novo models based on primary structure inputs (such as Alpha Fold cite:&jumper2021highly) are not suitable for all structure types cite:&azzaz2022epigenetic or dynamic and environment-dependent conformations cite:&moore2022protein.
+The most accurate results can be obtained by spectroscopic determination of protein structure, which is a time-consuming process.
 
-Protein secondary structure prediction is a crucial step in understanding the three-dimensional structure of proteins and its relation to their function. Nuclear magnetic resonance (NMR) spectroscopy is a powerful tool for studying protein conformation and dynamics, but the process of assigning NMR spectra to specific residues can be time-consuming and labor-intensive.(from ChatGPT)
-Especially for proteins in solution, N-HSQC spectra can provide information about the proteins dynamics and conformation. These spectra are relatively easy to obtain and can be used to study large molecule or even entire protein complexes. In addtion to the given advantages of N-HSQC spectra for protein analysis, they provide a unique pattern of peaks for each individual protein also known as fingerprint spectra.
-The combination of unique identifictions and easily to obtain makes N-HSQC spectra an optimal tool for analyzing and predicting secondary protein stuctures.
-Based on the idea that distinct patterns in NMR spectra lead to different types of secondary structure (alpha helix, beta sheet and random coil) and therefore allow the prediction of secondary structures of proteins.
-In the paper "Prediction of the amount of secondary structure of proteins using unassigned NMR spectra: a tool for target selection in structural proteomics" Moreau et. al. developed back in 2006 a tool called PASSNMR to predict the secondary structure of a protein based on 2D N-HSQC as well as with C-HSQC spectra.
+A widely used spectroscopic method for protein structure analysis is nuclear magnetic resonance (NMR) spectroscopy.
+In NMR-based protein structure determination, various types of NMR spectra (HSQC, NOESY, HMBC, etc.) are measured, from which the protein structure can be reconstructed cite:&wuthrich1990protein cite:&guerry2011advances.
+This procedure is not only very time consuming, but also requires a high level of expertise on the part of the researchers.
+A particularly useful spectrum for NMR determination is the N-HSQC spectrum, which is relatively easy to measure and allows the study of proteins ranging from small size to whole protein complexes cite:&aubin2008assessment.
+In addition, the N-HSQC spectrum provides a unique pattern of peaks for each individual protein and is therefore also known as a fingerprint spectrum.
+These two advantages make N-HSQC spectra a perfect tool for secondary structure prediction based on real measurement data.
+The use of measured data for structure prediction is expected to increase robustness on the one hand and is also suitable for the prediction of dynamic, environment-dependent as well as unknown protein structure types on the other hand cite:&zuiderweg2021insights .
 
+The earliest article found implementing this idea was published in 2006 by V.H. Moreau et. al. under the name "Prediction of the amount of secondary structure of proteins using unassigned NMR spectra: a tool for target selection in structural proteomics" in the journal Genetics and Molecular Biology cite:&moreau2006prediction.
+Here, the authors used unassigned HSQC spectra to predict the three-state secondary structure elements of proteins.
+Based on 72 proteins from the Protein Data Bank (PDB) cite:&berman2000protein, spectra obtained from the Biological Magnetic Resonance Bank (BMRB) cite:&hoch2023biological were divided into 10x10 grids.
+The number of peaks measured in each quadrant was used to predict the secondary structure by a multiple linear regression model.
+To improve the prediction performance, only quadrants that had an absolute correlation higher than 0.3 were used as input to the model.
+Using only N-HSQC spectra resulted in 70% accuracy for the alpha helix and 71% for the beta sheet, while the coil content was calculated by taking the difference of the sum of the two secondary structure predictions to 1.
+In non-mathematical language, the authors argue that if the secondary structure is neither an alpha helix nor a beta sheet, it must be a coil.
 
-The result showed an accuracy of for the prediction around 85% when combining N-HSQC and C-HSQC. When only using N-HSQC spectra the accuary for the prediction droped to 70%.
-For predicting the
+Much progress has been made in the field of structure prediction since the findings of Moreau et. al. in 2006 cite:&kuhlman2019advances, and the size of NMR and protein databases has grown steadily since then, currently (11/2022) standing at about 8257 PDB-to-BMRB links.
+Over the past decade, protein structure prediction used template or template free based predictions methods cite:&zhou2011trends cite:&alquraishi2021machine. Advances in machine learning and deep learning combined with huge amounts of data collected by crystallographic (and NMR) measurements have made it possible to obtain very good results cite:&dong2021survey.
+However, there is still a lack of an updated version of a structure elucidation for protein secondary structures that incorporates both statistical methods and protein measurements to combine the best of both worlds by using the accuracy of NMR experiments and the speed of statistical models.
 
+The goals of this project are twofold.
+First, to reproduce the results of Moreau et. al. and to investigate the influence of the amount of data on the predictive performance.
+The completed model can therefore be considered an important update after 16 years and can also be used as a basis for predicting the three-state secondary structure by N-HSQC spectra.
+The second goal is to demonstrate the potential of predicting structures based on N-HSQC and to open the door for future follow-up projects that extend the models implemented here with more advanced machine learning methods as well as Deep Learning or even the prediction of eight-state secondary structures.
+By confirming the results of Moreau et. al. or improving them with the extended dataset, this project could demonstrate the potential of protein secondary structure prediction and promote the use of prediction models based on measured data to improve the robustness of protein structure predictions.
 
-In this project I try to reproduce the results from the paper from Moreau et. al. and extend the number of proteins to improve the predictions.
