@@ -1,43 +1,56 @@
-from Rebuild_Linear_Regression_big import rebuild_dataset_big
-from Rebuild_Linear_Regression_big import rebuild_linear_regression_big
-
-from Rebuild_Linear_Regression_small import rebuild_dataset_small
-from Rebuild_Linear_Regression_small import rebuild_linear_regression_small
-
-from Simple_Linear_Regression_big import simple_dataset_big
-from Simple_Linear_Regression_big import simple_linear_regression_big
-
-from Simple_Linear_Regression_small import simple_dataset_small
-from Simple_Linear_Regression_small import simple_linear_regression_small
-
-
 import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
 import numpy as np
-from scipy.stats import pearsonr as pearson
+import seaborn as sns
+from sklearn.metrics import r2_score
+
+def make_one_scatter(measurements, predictions_, title):
+    """makes a scatter plot"""
+    fig, ax = plt.subplots(figsize=(10,6))
+    fig.canvas.manager.set_window_title(title)
+    
+    plt.gca().set_xlim(0,1)
+    plt.gca().set_ylim(0,1)
+    plt.grid()
+
+    line = [x/10 for x in range(10)]
+    plt.plot(line, line)
+    names = ["rebuild big", "simple big", "rebuild small", "simple small"]
+    for name, predictions in zip(names, predictions_):
+        sns.regplot(measurements, predictions, scatter=False, label=name)
+
+    plt.xlabel("measurements")
+    plt.ylabel("predictions")
+
+    plt.legend(loc="upper left")
+    plt.savefig("../../Drafts/Project-Thesis/img/" + "Pearson_scatter_" + title)
+    plt.show()
+    plt.close()
 
 
+    
 def make_scatter(measurements, predictions, title):
     """makes a scatter plot"""
     # braucht messungswerte, gefittete werte und vorhergesagte werte; geht nur für einzelne Vorhersagen; z.B. aus Kreuzvalidierung
     fig, ax = plt.subplots(figsize=(10,6))
     fig.canvas.manager.set_window_title(title)
-    plt.scatter(measurements, predictions, s=0.3, color="dodgerblue")
-    plt.xlabel("measurements")
-    plt.ylabel("predictions")
+    plt.scatter(measurements, predictions, s=8, color="dodgerblue")
+    plt.xlabel("measurements", fontsize=20)
+    plt.ylabel("predictions", fontsize=20)
 
     m, b = np.polyfit(measurements, predictions, 1)
 
-    angle = np.arctan(m)
-    angle_degree = np.degrees(angle)
+    print("r2_score: ", title, ": ",r2_score(measurements, predictions))
+    plt.plot(measurements, m*np.array(measurements)+b, color="midnightblue")
 
-    plt.plot(measurements, m*np.array(measurements)+b, color="midnightblue", label="linear regression")
-    plt.plot(measurements, measurements, "k:", alpha=0.15, label=rf"expected line (45°)")
-
-    plt.xlim(0,0.8)
+    
+    #plt.xlim(0,0.8)
     #plt.ylim(-0.5,2)
-    plt.legend(loc="upper left")
-    plt.show()
+    #plt.legend(loc="upper left")
+    plt.savefig("../../Drafts/Project-Thesis/img/" + "Pearson_scatter_" + title)
+    #plt.show()
+    plt.close()
+    
 
 
 def make_boxplot(data, title):
@@ -109,8 +122,11 @@ def make_boxplot(data, title):
     fig.text(0.80, 0.045, "3065 training points", backgroundcolor=box_colors[1], color="white", weight="roman", size="x-small")
     fig.text(0.80, 0.013, "*", color="white", backgroundcolor="silver", weight="bold", size="x-small")
     fig.text(0.815, 0.013, " Average Value", color="black", weight="roman", size="x-small")
+
+    plt.savefig("../../Drafts/Project-Thesis/img/" + "Boxplot_" + title)
+    #plt.show()
+    plt.close()
     
-    plt.show()
         
     # all pearson correlations, nach der Kreuzvalidierung und alle zu vergleichenden Werte auf einmal
     return
@@ -121,19 +137,26 @@ def make_histogram(helix_percentage, sheet_percentage, coil_percentage, title):
     fig = plt.figure(figsize=(10,6))
     fig.canvas.manager.set_window_title(title)
     all_percentage = np.array(helix_percentage) + np.array(sheet_percentage) + np.array(coil_percentage)
-    print("Average: ",sum(all_percentage)/len(all_percentage))
-    print("Median: ", np.median(all_percentage))
+    #print("Average: ",sum(all_percentage)/len(all_percentage))
+    #print("Median: ", np.median(all_percentage))
 
+    #for i in range(len(helix_percentage)):
+    #    print(helix_percentage[i],",", sheet_percentage[i],",", coil_percentage[i])
     
     y, x, _ = plt.hist(all_percentage, 100, density=True, facecolor="midnightblue")
+    #----sns.kdeplot(all_percentage, shade=True, color="grey", bw_method="silverman")
     
-    plt.axvline(all_percentage.mean(), color='white', linestyle='dashed', linewidth=1)
-    plt.annotate(f"Mean: {round(all_percentage.mean(),2)}", (all_percentage.mean()+0.1, y.max()-0.1))
+    #plt.axvline(all_percentage.mean(), color='white', linestyle='dashed', linewidth=1)
+    #plt.annotate(f"Mean: {round(all_percentage.mean(),2)}", (all_percentage.mean()+0.1, y.max()-0.1))
 
-    plt.axvline(np.median(all_percentage), color='red', linestyle='dashed', linewidth=1)
-    plt.annotate(f"Median: {round(np.median(all_percentage),2)}", (np.median(all_percentage)+0.1, y.max()-0.2), color="red")
-    
+    #plt.axvline(np.median(all_percentage), color='red', linestyle='dashed', linewidth=1)
+    #plt.annotate(f"Median: {round(np.median(all_percentage),2)}", (np.median(all_percentage)+0.1, y.max()-0.2), color="red")
+
+    plt.xlim(-1,3)
+    #######plt.savefig("../../Drafts/Project-Thesis/img/" + "Sum_percentage_" + title)
     plt.show()
+    #plt.close()
+    
     
 
     
@@ -150,6 +173,7 @@ def make_barplots(measurements, predictions, title):
     sum_all_predictions = sum([sum(prediction) for prediction in predictions])
     sum_single_predictions = [(sum(prediction)/sum_all_predictions)*100 for prediction in predictions]
 
+    print(title)
     print(sum_single_measurements)
     print(sum_single_predictions)
 
@@ -161,145 +185,174 @@ def make_barplots(measurements, predictions, title):
     plt.xticks([r + (bar_width/2) for r in range(3)], ["Helix", "Sheet", "Coil"])
     plt.ylabel("Secondary Structure in %")
     plt.legend(loc="upper left")
+    #plt.savefig("../../Drafts/Project-Thesis/img/" + "Measure_vs_Predict_" + title)
     plt.show()
+    #plt.close()
+    
+
+
+def make_histoplots(measurements, predictions, title):
+
+    names = ["helix", "sheet", "coil"]
     
     
+    for j, (sec_struc_measure, sec_struc_preds) in enumerate(zip(measurements, predictions)):
+        pred_error_ = []
+        sec_struc_measure = list(sec_struc_measure) * 1000
+        for i, (measurement, pred) in enumerate(zip(sec_struc_measure, sec_struc_preds)):
+            pred_error = measurement - pred
+            pred_error_.append(pred_error)
 
+        fig = plt.figure(figsize=(10,6))
+        fig.canvas.manager.set_window_title(title + names[j])
 
-
-
-
-def linear_regression_results(n, function_dataset, function_linear_regression):
-    helix_percentage, sheet_percentage, coil_percentage, matrix = function_dataset()
-    
-    h_pearson_ = []
-    s_pearson_ = []
-    c_pearson_ = []
-
-    h_rmse_ = []
-    s_rmse_ = []
-    c_rmse_ = []
-
-    h_predictions_ = []
-    s_predictions_ = []
-    c_predictions_ = []
-
-    h_measurements_ = []
-    s_measurements_ = []
-    c_measurements_ = []
-
-    h_r2_ = []
-    s_r2_ = []
-    c_r2_ = []
-    
-    for i in range(n):
-        h_measurements, h_predictions, h_pearson, h_rmse, h_r2 = function_linear_regression(helix_percentage, matrix)
-        s_measurements, s_predictions, s_pearson, s_rmse, s_r2 = function_linear_regression(sheet_percentage, matrix)
-        c_measurements, c_predictions, c_pearson, c_rmse, c_r2 = function_linear_regression(coil_percentage, matrix)
-
+        plt.xlim(-0.75,0.75)
+        plt.hist(pred_error_, 100, density=True)
+        #---sns.kdeplot(pred_error_, color="grey", shade=True, bw_method="silverman")
+        ####plt.savefig("../../Drafts/Project-Thesis/img/" + "Error_Predict_" + str(j) + title)
+        plt.show()
+        plt.close()
         
-        h_predictions_ += list(h_predictions)
-        s_predictions_ += list(s_predictions)
-        c_predictions_ += list(c_predictions)
 
-        h_measurements_ += list(h_measurements)
-        s_measurements_ += list(s_measurements)
-        c_measurements_ += list(c_measurements)
-        
-        h_pearson_ += list(h_pearson)
-        s_pearson_ += list(s_pearson)
-        c_pearson_ += list(c_pearson)
 
-        h_rmse_ += list(h_rmse)
-        s_rmse_ += list(s_rmse)
-        c_rmse_ += list(c_rmse)
+def make_bar_std_plots(pearson_values, title):
+    fig = plt.figure(figsize=(10,6))
+    fig.canvas.manager.set_window_title(title)
 
-        h_r2_ += list(h_r2)
-        s_r2_ += list(s_r2)
-        c_r2_ += list(c_r2)
+    mean_ = []
+    std_ = []
+    for values in pearson_values:
+        mean_.append(np.mean(values))
+        std_.append(np.std(values))
 
-    pearson_combi = [h_pearson_, s_pearson_, c_pearson_]
-    rmse_combi = [h_rmse_, s_rmse_, c_rmse_]
-    predictions_combi = [h_predictions_, s_predictions_, c_predictions_]
-    measurements_combi = [h_measurements_, s_measurements_, c_measurements_]
-    r2_combi = [h_r2_, s_r2_, c_r2_]
+    for i in range(4):
+        plt.bar(f"model {i}", mean_[i])
+        plt.errorbar(f"model {i}", mean_[i], yerr=std_[i], fmt="o", color="grey", capsize=100) 
+
+    plt.savefig("../../Drafts/Project-Thesis/img/" + "Bar_predict_metric_" + title)
+    #plt.show()
+    plt.close()
     
-    return pearson_combi, rmse_combi, predictions_combi, measurements_combi, r2_combi
 
+    
+from run_LR import load_dataset
+from run_LR import build_simple_models, build_rebuild_models
 
-
+from LR_data_preprocessing import seperate_secondary_structures
 
 if __name__=="__main__":
-    n = 10
+
+    # test data
+    X_test, y_test = load_dataset(488)
     
-    pearson_rebuild_big, rmse_rebuild_big, predictions_rebuild_big, measurements_rebuild_big, r2_rebuild_big = linear_regression_results(n, rebuild_dataset_big, rebuild_linear_regression_big)
+    ## big models
+    X_train, y_train = load_dataset(2353)
+    helix, sheet, coil = seperate_secondary_structures(y_test)
+    # simple big model
+    res3 = build_simple_models(X_train, X_test, y_train, y_test, modelsize="big")
+    # rebuild big model
+    res4 = build_rebuild_models(X_train, X_test, y_train, y_test, modelsize="big")
 
-    pearson_rebuild_small, rmse_rebuild_small, predictions_rebuild_small, measurements_rebuild_small, r2_rebuild_small = linear_regression_results(n, rebuild_dataset_small, rebuild_linear_regression_small)
-
-    pearson_simple_big, rmse_simple_big, predictions_simple_big, measurements_simple_big, r2_simple_big = linear_regression_results(n, simple_dataset_big, simple_linear_regression_big)
-
-    pearson_simple_small, rmse_simple_small, predictions_simple_small, measurements_simple_small, r2_simple_small = linear_regression_results(n, simple_dataset_small, simple_linear_regression_small)
-        
-    print("Helix R^2: ", np.mean(r2_rebuild_big[0]), np.mean(r2_rebuild_small[0]), np.mean(r2_simple_big[0]), np.mean(r2_simple_small[0]))
-    print("Sheet R^2: ", np.mean(r2_rebuild_big[1]), np.mean(r2_rebuild_small[1]), np.mean(r2_simple_big[1]), np.mean(r2_simple_small[1]))
-    print("Coil R^2: ", np.mean(r2_rebuild_big[0]), np.mean(r2_rebuild_small[0]), np.mean(r2_simple_big[0]), np.mean(r2_simple_small[0]))
+    #print()
+    
+    ## small models
+    X_train, y_train = load_dataset(401)
+    # simple small model
+    res1 = build_simple_models(X_train, X_test, y_train, y_test, modelsize="small")
+    # rebuild simple model
+    res2 = build_rebuild_models(X_train, X_test, y_train, y_test, modelsize="small")
 
     
-    plt.style.use("seaborn")
-    #-------------------barplots-----------------------#
-    make_barplots(measurements_rebuild_big, predictions_rebuild_big, "rebuild big")
-    make_barplots(measurements_rebuild_small, predictions_rebuild_small, "rebuild small")
-    make_barplots(measurements_simple_big, predictions_simple_big, "simple big")
-    make_barplots(measurements_simple_small, predictions_simple_small, "simple small")
+    
+    
+    plt.style.use("default")
+    #----------------make barplots std pearson---------------------#
+    #make_bar_std_plots([res1[0][1], res3[0][1], res2[0][1], res4[0][1]], "Comparison of Pearson Values Distribution for Linear Models Helix Prediction")
+    #make_bar_std_plots([res1[1][1], res3[1][1], res2[1][1], res4[1][1]], "Comparison of Pearson Values Distribution for Linear Models Sheet Prediction")
+    #make_bar_std_plots([res1[2][1], res3[2][1], res2[2][1], res4[2][1]], "Comparison of Pearson Values Distribution for Linear Models Coil Prediction")
+    #----------------make barplots std rmse---------------------#
+    #make_bar_std_plots([res1[0][2], res3[0][2], res2[0][2], res4[0][2]], "Comparison of RMSE Values Distribution for Linear Models Helix Prediction")
+    #make_bar_std_plots([res1[1][2], res3[1][2], res2[1][2], res4[1][2]], "Comparison of RMSE Values Distribution for Linear Models Sheet Prediction")
+    #make_bar_std_plots([res1[2][2], res3[2][2], res2[2][2], res4[2][2]], "Comparison of RMSE Values Distribution for Linear Models Coil Prediction")
    
+    #--------------histoplots error distribution----------------#
+    make_histoplots([np.array(helix).ravel(), np.array(sheet).ravel(), np.array(coil).ravel()],
+                  [res4[0][0], res4[1][0], res4[2][0]],
+                  "rebuild big")
+
+    make_histoplots([np.array(helix).ravel(), np.array(sheet).ravel(), np.array(coil).ravel()],
+                  [res3[0][0], res3[1][0], res3[2][0]],
+                  "simple big")
+
+    make_histoplots([np.array(helix).ravel(), np.array(sheet).ravel(), np.array(coil).ravel()],
+                  [res2[0][0], res2[1][0], res2[2][0]],
+                  "rebuild small")
+    make_histoplots([np.array(helix).ravel(), np.array(sheet).ravel(), np.array(coil).ravel()],
+                  [res1[0][0], res1[1][0], res1[2][0]],
+                  "simple small")
+
+    #--------------scatter plots------------------#
+
+    #make_one_scatter(np.array(helix).ravel(), [res4[0][4],res3[0][4],res2[0][4],res1[0][4]], "all_in_one_helix")
+    #make_one_scatter(np.array(sheet).ravel(), [res4[1][4],res3[1][4],res2[1][4],res1[1][4]], "all_in_one_sheet")
+    #make_one_scatter(np.array(coil).ravel(), [res4[2][4],res3[2][4],res2[2][4],res1[2][4]], "all_in_one_coil")
+    #print(len(helix))
+    #make_scatter(np.array(helix).ravel(), res4[0][4], "rebuild big helix")
+    #make_scatter(np.array(sheet).ravel(), res4[1][4], "rebuild big sheet")
+    #make_scatter(np.array(coil).ravel(), res4[2][4], "rebuild big coil")
+
+    #make_scatter(np.array(helix).ravel(), res3[0][4], "simple big helix")
+    #make_scatter(np.array(sheet).ravel(), res3[1][4], "simple big sheet")
+    #make_scatter(np.array(coil).ravel(), res3[2][4], "simple big coil")
+
+    #make_scatter(np.array(helix).ravel(), res2[0][4], "rebuild small helix")
+    #make_scatter(np.array(sheet).ravel(), res2[1][4], "rebuild small sheet")
+    #make_scatter(np.array(coil).ravel(), res2[2][4], "rebuild small coil")
+
+    #make_scatter(np.array(helix).ravel(), res1[0][4], "simple small helix")
+    #make_scatter(np.array(sheet).ravel(), res1[1][4], "simple small sheet")
+    #make_scatter(np.array(coil).ravel(), res1[2][4], "simple small coil")
+
+    
+    #-------------------barplots-----------------------#
+    
+    #make_barplots([np.array(helix).ravel(), np.array(sheet).ravel(), np.array(coil).ravel()],
+    #              [res4[0][0], res4[1][0], res4[2][0]],
+    #              "rebuild big")
+
+    #make_barplots([np.array(helix).ravel(), np.array(sheet).ravel(), np.array(coil).ravel()],
+    #              [res3[0][0], res3[1][0], res3[2][0]],
+    #              "simple big")
+
+    #make_barplots([np.array(helix).ravel(), np.array(sheet).ravel(), np.array(coil).ravel()],
+    #              [res2[0][0], res2[1][0], res2[2][0]],
+    #              "rebuild small")
+
+    #make_barplots([np.array(helix).ravel(), np.array(sheet).ravel(), np.array(coil).ravel()],
+    #              [res1[0][0], res1[1][0], res1[2][0]],
+    #              "simple small")
 
     #-------------------histogram plots-----------------------#
-    # rebuild big
-    make_histogram(predictions_rebuild_big[0], predictions_rebuild_big[1], predictions_rebuild_big[2], "rebuild big")
-    # rebuild small
-    make_histogram(predictions_rebuild_small[0], predictions_rebuild_small[1], predictions_rebuild_small[2], "rebuild small")
-    # simple big
-    make_histogram(predictions_simple_big[0], predictions_simple_big[1], predictions_simple_big[2], "simple big")
-    # simple small
-    make_histogram(predictions_simple_small[0], predictions_simple_small[1], predictions_simple_small[2], "simple small")
-
+    #for i in y_test:
+    #    print(i[0], ",", i[1], ",", i[2])
+    #print()
+    make_histogram(res4[0][0], res4[1][0], res4[2][0], "rebuild big")
+    #print()
+    make_histogram(res3[0][0], res3[1][0], res3[2][0], "simple big")
+    #print()
+    make_histogram(res2[0][0], res2[1][0], res2[2][0], "rebuild small")
+    #print()
+    make_histogram(res1[0][0], res1[1][0], res1[2][0], "simple small")
     
-    #-------------------scatter plots-----------------------#
-    # helix scatter plots
-    make_scatter(measurements_rebuild_big[0], predictions_rebuild_big[0], "rebuild big helix")
-    make_scatter(measurements_rebuild_small[0], predictions_rebuild_small[0], "rebuild small helix")
-    make_scatter(measurements_simple_big[0], predictions_simple_big[0], "simple big helix")
-    make_scatter(measurements_simple_small[0], predictions_simple_small[0], "simple small helix")
+    
 
-    # sheet scatter plots
-    make_scatter(measurements_rebuild_big[1], predictions_rebuild_big[1], "rebuild big sheet")
-    make_scatter(measurements_rebuild_small[1], predictions_rebuild_small[1], "rebuild small sheet")
-    make_scatter(measurements_simple_big[1], predictions_simple_big[1], "simple big sheet")
-    make_scatter(measurements_simple_small[1], predictions_simple_small[1], "simple small sheet")
+     #-------------------pearson boxplots-----------------------#
+    #make_boxplot([res1[0][1], res3[0][1], res2[0][1], res4[0][1]], "Comparison of Pearson Values Distribution for Linear Models Helix Prediction")
+    #make_boxplot([res1[1][1], res3[1][1], res2[1][1], res4[1][1]], "Comparison of Pearson Values Distribution for Linear Models Sheet Prediction")
+    #make_boxplot([res1[2][1], res3[2][1], res2[2][1], res4[2][1]], "Comparison of Pearson Values Distribution for Linear Models Coil Prediction")
 
-    # coil scatter plots
-    make_scatter(measurements_rebuild_big[2], predictions_rebuild_big[2], "rebuild big coil")
-    make_scatter(measurements_rebuild_small[2], predictions_rebuild_small[2], "rebuild small coil")
-    make_scatter(measurements_simple_big[2], predictions_simple_big[2], "simple big coil")
-    make_scatter(measurements_simple_small[2], predictions_simple_small[2], "simple small coil")
+     #-------------------rmse boxplots-----------------------#
+    #make_boxplot([res1[0][2], res3[0][2], res2[0][2], res4[0][2]], "Comparison of RMSE Values Distribution for Linear Models Helix Prediction")
+    #make_boxplot([res1[1][2], res3[1][2], res2[1][2], res4[1][2]], "Comparison of RMSE Values Distribution for Linear Models Sheet Prediction")
+    #make_boxplot([res1[2][2], res3[2][2], res2[2][2], res4[2][2]], "Comparison of RMSE Values Distribution for Linear Models Coil Prediction")
 
-    #-------------------pearson boxplots-----------------------#
-    # helix boxplots pearson 
-    make_boxplot([pearson_simple_small[0], pearson_simple_big[0], pearson_rebuild_small[0], pearson_rebuild_big[0]], "Comparison of Pearson Values Distribution for Linear Models Helix Prediction")
-    # sheet boxplots pearson
-    make_boxplot([pearson_simple_small[1], pearson_simple_big[1], pearson_rebuild_small[1], pearson_rebuild_big[1]], "Comparison of Pearson Values Distribution for Linear Models Sheet Prediction")
-    # coil boxplots pearson
-    make_boxplot([pearson_simple_small[2], pearson_simple_big[2], pearson_rebuild_small[2], pearson_rebuild_big[2]], "Comparison of Pearson Values Distribution for Linear Models Coil Prediction")
-
-
-    #-------------------RMSE boxplots-----------------------#
-    # helix boxplots rmse 
-    make_boxplot([rmse_simple_small[0], rmse_simple_big[0], rmse_rebuild_small[0], rmse_rebuild_big[0]], "Comparison of RMSE Values Distribution for Linear Models Helix Prediction")
-    # sheet boxplots rmse
-    make_boxplot([rmse_simple_small[1], rmse_simple_big[1], rmse_rebuild_small[1], rmse_rebuild_big[1]], "Comparison of RMSE Values Distribution for Linear Models Sheet Prediction") 
-    # coil boxplots rmse
-    make_boxplot([rmse_simple_small[2], rmse_simple_big[2], rmse_rebuild_small[2], rmse_rebuild_big[2]], "Comparison of RMSE Values Distribution for Linear Models Coil Prediction")
-                  
-
-
-   
