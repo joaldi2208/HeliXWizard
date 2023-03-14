@@ -2,3 +2,14 @@
 *~
 .ipynb_checkpoints/
 __pycache__/
+*.toc
+*.tex
+*.loc
+*.odt
+*.fls
+*.fdb*
+*.aux
+*.out
+*.bbl
+.DS_Store
+*.log

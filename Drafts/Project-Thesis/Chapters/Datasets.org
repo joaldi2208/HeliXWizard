@@ -1,0 +1,74 @@
+#+OPTIONS: toc:nil
+* Data Sets
+
+Three data sets were created based on the filtered 2841 data entries.
+These include a small data set to replicate the results from the reference article, a large data set with all available data to compare the effects of an increasing amount of data, and a test data set to test the linear models.
+
+First, the small data set was formed using the deposition date of the spectra in the BMRB database. All spectra with a deposition date before 2005/09/25, the date of publication of the reference article, were included in the data set.
+The number of entries in the small data set was 401 proteins.
+The remaining 2440 were split into training and test data using the sklearn train_test_split function in a ratio of 80/20.
+The 20% portion represented the test data set with 488 protein entries.
+The large training dataset was formed by merging the 80% portion and the small training dataset.
+This data set contained 2353 protein entries.
+This method attempted to maximize the number of entries and diversity of the small data set because the proteins used are not known from the reference article.
+
+
+** Measurement conditions
+The H-shift distributions show a narrow distribution for both the small and test data sets (Figure [[H_shift]]).
+While the test data set shows a symmetric distribution, the small data set shows a small shoulder around 9 ppm and has a higher density at about 8.3 ppm, which is the mean for both the small and test data sets.
+Compared to the two smaller data sets, the large data set is slightly shifted to the lower field and has a wider distribution.
+The mean value is 8.8 ppm and the distribution is also skewed to the right, indicating that the density of values above 8.8 ppm is higher.
+
+#+CAPTION: H-shift distribution for the N-HSQC spectra for the two training sets (red = 2353 proteins, green = 401 proteins) and the test set (blue = 488 proteins). 
+#+NAME: H_shift
+#+ATTR_LATEX: :width 13cm
+[[../img/H_Shift_Distribution.jpg]]
+
+For the N-shift distribution, again the small and test data sets show a narrow distribution compared to the large data set, while the broad distribution from the large data set is right skewed and, as with the H-shift distribution, has a higher density in the low field (Figure [[N_shift]]).
+The mean value is 125 ppm.
+For the small data set, one can see a shoulder in the low field around 128 ppm, while the test data set shows a flat area in the high field around 105 ppm.
+Both data sets have a similar mean around 122 ppm.
+
+#+CAPTION: N-shift distribution for the N-HSQC spectra for the two training sets and the test set. 
+#+NAME: N_shift
+#+ATTR_LATEX: :width 13cm
+[[../img/N_Shift_Distribution.jpg]]
+
+The temperature distribution shows mainly entries around the three most frequent temperature values (Fig. [[temp]]).
+First, most of the data points are at room temperature (297 K), second and third at 293 K and 303 K, respectively.
+Overall, the distribution does not show much difference between the three data sets.
+
+#+CAPTION: Temperature distribtution for all three data sets.
+#+NAME: temp
+#+ATTR_LATEX: :width 13cm
+[[../img/Temperature_Distribution.jpg]]
+
+Next, the pH distribution shows a similar distribution between the small and large data set, but the distribution of pH values from the test data set is more broadly distributed across mainly three pH values (6.0, 6.5, and 7.5) (Fig. [[pH]]).
+Overall, the test data set shows a higher density toward the small pH values compared to the other two data sets.
+The small and large data sets are very similar in their distribution.
+The main density is at pH 6.5 and 7.0, while the small data set is even more concentrated in the even numbers than the large data set, which is more distributed around one value.
+
+#+CAPTION: PH distribution for all three data sets.
+#+NAME: pH
+#+ATTR_LATEX: :width 13cm
+[[../img/PH_Distribution.jpg]]
+
+In summary, all three data sets show a comparable distribution of their measurement conditions and chemical shifts.
+Especially considering that all figures shown are density plots and therefore, especially if the large data set differs somewhat from the small and test data set due to its four to five times size, all important information for a prediction should be included in the large data set.
+
+** Secondary structure content
+Next, the distribution of the three secondary structures across all three data sets is shown (Figure [[sec_struc_percentage]]).
+
+#+CAPTION: Comparison between the amount of secondary structure content for all three data sets.
+#+NAME: sec_struc_percentage
+#+ATTR_LATEX: :width 13cm
+[[../img/SecStrucBars.jpg]]
+
+The content of secondary structures is almost the same in all three data sets, with the small data set having slightly more sheet and helix structures and thus a lower proportion of coils.
+Overall, however, the distribution is the same, with the coil accounting for the largest proportion of secondary structures in the data set at about 50%, followed by the helix at about 32%.
+The least common secondary structure is the sheet, which accounts for nearly 18% of all secondary structures in the dataset.
+
+When analyzing the PDB database, the highest content of secondary structures is the helix, followed by the sheet and coil, and then the left-handed alpha helix cite:&hovmoller2002conformations.
+However, in our case, the distribution shows a majority of coils followed by helix and sheet.
+The reason for this is that the 3-state calculation of coil contains many other structures such as the left-handed alpha helix.
+Looking at the 8-state secondary structure, the proportion of alpha helix is higher than that of coil, followed by beta sheet(Table [[Trans_sec_states]]).

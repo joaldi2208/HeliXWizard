@@ -1,0 +1,15 @@
+N-HSQC spectra provide a unique pattern for each molecule and encode information about secondary structure content.
+This information can be used to predict the secondary structure content of proteins. Despite the confirmation and improvement of Moreau et. al.'s results, the method needs further investigation to realize its full potential.
+
+In the age of artificial intelligence, it is obvious to explore the potential of the method with machine learning and deep learning tools, using more data and including the prediction of eight-state secondary structures in addition to three-state secondary structures.
+On the road to exploring the use of N-HSQC spectra for secondary structure prediction, some challenges lie ahead, especially in the prediction of secondary structures related to proline, as its secondary amine does not provide a signal in the N-HSQC spectra.
+
+By solving these problems and using more and more data from the ever-growing databases, this method could be applied in protein structure prediction tools used for initial inspection of proteins in the drug discovery stage and as an aid in general protein research.
+In contrast to currently used prediction models based on primary protein structure, the blind spot of protein dynamics can be investigated by using actual structural information measured by NMR.
+Therefore, N-HSQC-based prediction methods could be used as a constraint for tertiary protein structure prediction methods and provide us with new insights into the protein folding process.
+
+
+
+
+
+

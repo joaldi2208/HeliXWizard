@@ -1,0 +1,6 @@
+#+LATEX_HEADER: \usepackage[AUTO]{babel}
+#+LATEX_HEADER: \usepackage[utf8]{inputenc}
+#+LATEX_HEADER: \usepackage{microtype}
+#+LATEX_HEADER: \usepackage{graphics}
+#+LATEX_HEADER: \usepackage[backend=biber,style=numeric,sorting=none]{biblatex}
+#+LATEX_HEADER: \addbibresource{/Users/jonasdietrich/Literature/Citations/MasterProject.bib}

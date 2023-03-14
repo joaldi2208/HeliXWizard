@@ -1,0 +1,26 @@
+\begin{titlepage}
+\begin{center}
+\vspace*{-2cm}
+\textbf{\Large{Testing the Potential of Secondary Structure Content Prediction of Proteins from N-HSQC Spectra}} \\ 
+\vspace{2cm}
+\includegraphics[width=13cm]{./img/Zeichnung2.pdf} \\
+\textbf{Jonas Dietrich} \\
+\textit{jonas.dietrich@uni-jena.de} \\
+\vspace{0.5cm}
+\textsc{Reasearch Internship in MC3.1.1 Analytical Chemistry} \\
+\vspace{1cm}
+\includegraphics[width=6cm]{./img/UniLogo.png} \\
+\vspace{1cm}
+First Supervisor \textbf{Prof. Dr. Steinbeck} \\
+Research Group \textbf{Steinbeck group} \\
+Departement  \textbf{Analytical Chemistry} \\
+University \textbf{Friedrich Schiller University Jena} \\
+\vspace{0.8cm}
+Second Supervisor \textbf{Dr. Peter Bellstedt} \\
+Research Group \textbf{Bellstedt lab} \\
+Departement  \textbf{Clinical institute} \\
+University \textbf{Zurich University} \\
+\vspace{0.8cm}
+\today
+\end{center}
+\end{titlepage}

@@ -1,0 +1,28 @@
+Using a acquired dataset of 2841 proteins, we reproduce and improve on the results of an article published in Genetics and Molecular Biology in 2006 by Moreau et. al. that predicts the secondary structure content of proteins using their N-HSQC spectra.
+By using a subset of the dataset containing only entries prior to the publication of the reference article, I was able to find similar correlating quadrants to those used in the article.
+
+We also explore the potential of N-HSQC spectra for predicting secondary structure content by comparing four models that differ in the size of their training data set and the given spectra information.
+All in all, we improved the paper result from 70% and 71% accuracy for helix and sheet content by 10 percentage points and even 16 percentage points to 80% and 87%, respectively.
+In addition, we were also able to predict the coil content to a certain extent.
+
+When comparing the models with a small training data set, the use of quadrants with high correlation for a secondary structure element leads to a significant improvement in prediction.
+Based on this result, we can understand why the authors of "Prediction of the amount of secondary structure of proteins using unassigned NMR spectra: a tool for target selection in structural proteomics" used this approach.
+
+As expected, the prediction accuracy increases with the size of the data set when comparing models trained with a small data set and models trained with a large data set.
+This time, however, the model that includes all 100 quadrants shows better performance than the model that uses only quadrants with high correlation for a secondary structure element.
+
+Interestingly, for all models, the prediction accuracy decreased from sheet to helix to coil, even though the amount of secondary structure content represented in all datasets is exactly the opposite.
+This phenomenon can be partially explained by the relationship between the eight-state secondary structure and the three-state secondary structure.
+The program DSSP used calculates the eight-state secondary structure elements and forms the three-state secondary structure elements by a certain combination of these structure elements.
+While only two different eight-state secondary structure elements were combined for the three-state secondary structure of helix and sheet, the three-state secondary structure of coil consisted of four different eight-state secondary structure elements.
+Assuming that each eight-member secondary structure element can be identified by a specific pattern in the N-HSQC spectra, the more different eight-state secondary structure elements are reduced to a single three-state secondary structure element, the more difficult it is to find the corresponding patterns, since different combinatorial overlaps may occur.
+In support of this assumption, the comparison of correlating quadrants showed little to no correlation found for coil content, indicating more complex patterns possibly due to the combination of four different eight-state secondary structures.
+One way to test this explanation is to predict the eight-state secondary structure elements.
+If the eight-state secondary structure elements contained in the three-state secondary structure elements of the coil have better prediction accuracy, this assumption seems to hold.
+Of course, not every secondary structure element may have an equally unique pattern, which will also play an important role in prediction accuracy.
+
+While the difference between coil and helix/sheet is rather more obvious based on the number of quadrants found with high correlations in the spectra, the sheet and helix content show the same number of quadrants, at least for the large data set.
+Here, especially the number of positive correlations seems to be a main factor for the prediction accuracy.
+Therefore, the finding of at least twice as many positive correlations for sheet content than for helix content may explain the higher prediction accuracy of sheet content.
+
+Although the information from the quadrants with high correlation is able to explain the helix and sheet content to some extent, the best model uses all 100 quadrants, suggesting that there is more important underlying information in the spectra than the quadrants with high correlation for a secondary structure element.

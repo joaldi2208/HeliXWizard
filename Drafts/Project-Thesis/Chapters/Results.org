@@ -1,0 +1,187 @@
+#+OPTIONS: toc:nil
+#+TITLE: Results
+#+LATEX_HEADER: \usepackage{todonotes}
+#+LATEX_HEADER: \usepackage{subfigure}
+
+* Quadrants with high correlation
+First, we compare and examine the correlation coefficients of the quadrants in the 10x10 grid subdivided N-HSQC spectra.
+Three different correlation plots were compared based on the large data set, the small data set, and the data from the reference article.
+As stated in the article, only correlation coefficients below -0.3 or above 0.3 are considered to follow the authors' intention to include only quadrants with at least a moderate correlation coefficient.
+In Fig. [[comp_corr_matrix]], the quadrants colored blue show a positive correlation above 0.3, while the quadrants colored red show a negative correlation below -0.3.
+
+#+CAPTION: Comparison of moderate to high correlation quadrants for all three secondary structures across the big and small data set as well as the reference article. 
+#+NAME: comp_corr_matrix
+#+ATTR_LATEX: :width 13cm
+[[../img/comparison_correlation_heatmap.jpg]]
+
+Comparing the three different data sets, we can see that they all show positive and negative correlations in similar regions of the N-HSQC spectra for the respective secondary structure.
+Based on the helix correlation coefficients, the positive correlation is represented by the same quadrants in all three data sets, while the negative one undergoes a slight adjustment as the amount of data increases.
+The quadrants with the highest negative correlation form a corner structure that is mirrored almost opposite to the corner structure of the positively correlated quadrants.
+Overall, there are more quadrants with negative correlation than with positive correlation.
+
+In contrast to the helix correlation, more positively correlated quadrants than negatively correlated quadrants are generally found in the sheet heatmaps.
+It is noticeable that between the sheet and helix correlation heatmaps, the position of the positively and negatively correlated quadrants has changed.
+Previously, the left region of the N-HSQC spectrum showed a negative correlation for the helix, while it showed a positive correlation for the sheet.
+Also, the mentioned corner structure with high negative correlation for the helix content now shows the highest positive correlation for the sheet content.
+Based on this finding, it should be possible to distinguish between the sheet and helix contents in the spectra, as they show an inverse behavior in the N-HSQC spectra.
+
+From the reference data set with 72 proteins to the large data set with 2353 proteins, the quadrants with positive high correlation are shifted more to the middle of the spectra and the total number of quadrants with positive correlation decreases.
+The negatively correlated quadrants for the sheet content, overlap the positively correlated quadrants of the helix content.
+Starting from the reference dataset, two outlying quadrants are removed compared to the small dataset, while there is no difference between the small and large datasets for the selected negative quadrants.
+
+In the heatmaps of the coil correlation, one can notice that no correlation was found in the whole N-HSQC spectra in the reference article.
+Therefore, the authors decided to calculate the coil content as the content that was neither helix nor sheet.
+In our small and large data sets, we find one and two negatively correlated quadrants, respectively, but no positively correlated quadrants at all.
+This could indicate difficulties in predicting the coil content.
+In addition, the negatively correlated quadrants found for coil content overlap with the negatively correlated quadrants for sheet content, which also makes it difficult to distinguish between sheet and coil content.
+
+The combination of the colored quadrants for the helix, sheet, and coil content of the large data set was used to create the /2353subgroup/ model, and the same combination was used for the small data set to create the /401subgroup/ model.
+
+* Statistical Analysis
+To evaluate the models and draw conclusions about the impact of the amount of data used, one must compare the predicted secondary structure content of the test set with the actual secondary structure content calculated by the DSSP program.
+Two common methods for evaluating such predictions are the Pearson correlation coefficient and the root mean square error (RMSE).
+
+As can be seen in Fig. [[pearson_comparison]], one can observe significant differences between the Pearson correlation coefficients of all three secondary structure contents as well as the different model types.
+In general, all tested models show a similar pattern in the prediction results:
+While the sheet content is predicted with the highest accuracy, closely followed by the helix content, the prediction of the coil content shows by far the worst accuracy.
+
+Starting with the /401all/ model, the Pearson correlation coefficient only reaches values of 0.41 for the helix content, 0.43 for the sheet content and 0.12 for the coil content.
+Thus, the /401all/ model is the worst performing model in the test set and indicates that using only 72 proteins for the training process is not sufficient to efficiently find the relationship between all 100 quadrants.
+
+Using the /401subgroup/ model, there is a significant improvement in the prediction of helix and sheet content with corresponding Pearson correlation coefficients of 0.72 and 0.82.
+Interestingly, the prediction of coil content is 0.07 worse compared to the /401all/ model.
+Therefore, it can be assumed that by using quadrants that have a high correlation coefficient for secondary structure content, the complexity of the prediction can be reduced.
+Secondary structure contents with well-defined quadrants with positive or negative correlation such as sheet or helix benefit from this method, while secondary structure contents such as coil with only a few and vague correlations lose prediction accuracy.
+
+Compared to the /401subgroup/ model, the /2353subgroup/ model shows a Pearson correlation coefficient of 0.76 and 0.82 for the helix and sheet content, respectively, showing a slight improvement over the smaller model.
+At the same time, the prediction accuracy for the coil content drops even further to 0.03.
+Since the difference between the /401subgroup/- and the /2353subgroup/ model is only in the amount of data used to calculate the correlation coefficients for the quadrants (401 vs. 2351) and the training process (72 vs. 2000), the difference in performance between the models is due to the difference in the size of the data set.
+Either the selection of better correlated quadrants or the more diverse training data, but presumably both have their impact on improving the predictive accuracy of the /2353subgroup/ model.
+In contrast, the coil prediction does not seem to benefit from the additional training data and shows no correlation at all.
+
+Finally, comparing the Pearson correlation coefficients of the /2353all/ model, we can see the best overall performance with a Pearson correlation coefficient of 0.8 for the helix content, 0.87 for the sheet content, and 0.5 for the coil content.
+This is an unexpected result considering the performance differences between the /401subgroup/ and /2353subgroup/ models and the /401all/ model.
+Based on the previously discussed models, the use of high correlation quadrants appeared to improve the helix and sheet content immensely by nearly doubling the prediction accuracy while losing the predictive ability of the coil content.
+However, when the training data is more than five times larger than the /401all/ model, the prediction accuracy in predicting the helix and sheet content has doubled or even more than doubled.
+In addition, the prediction accuracy of the coils has further increased compared to the /401all/ model, which already showed better performance than the other two models.
+
+Overall, the expansion of the data set has a large impact on model performance, especially when all quadrants are used for prediction.
+Another finding is the consistent order of predictability of the secondary structure elements within the models: prediction of the sheet content showed the highest accuracy across all models, followed by prediction of the helix content, and lastly prediction of the coil content.
+
+#+CAPTION: Comparison of the four different models based on the pearson correlation coefficient of the prediction of the three secondary structure elements helix, sheet and coil. The /2353all/-model (bottom) shows overall the best performance.
+#+NAME: pearson_comparison
+#+ATTR_LATEX: :width 13cm
+[[../img/Pearson_comparison.jpg]]
+
+In addition to the Pearson correlation coefficient, the RMSE value is also used to compare the secondary structure prediction for the four models, as it allows us to calculate the actual distance between the predicted and measured data, rather than their trends.
+
+The result shown in Fig. [[rmse_comparison]] confirms the findings from the Pearson correlation coefficient discussed earlier.
+Starting with the /401all/ model, the RMSE values are highest throughout the comparison with values of 0.44, 0.28, and 0.45 for the helix, sheet, and coil contents, respectively.
+
+As expected from the above discussion, the /401subgroup/ model shows significant improvement in predicting the helix and sheet content, but this time the prediction of the coil content is also improved from 0.45 to 0.2.
+The improvement of the /401subgroup/ model seems to be due to the fact that the majority of the data points lie on the horizontal used for secondary structure content prediction (no correlation) (Fig. [[scatter_comparison]] f).
+
+Staying with the /2353subgroup/ model, there is a slight improvement from 0.18 to 0.15 for helix content and from 0.09 to 0.08 for sheet content compared to the /401subgroup/ model.
+As mentioned earlier, the accuracy of the coil content prediction is based on a high density of proteins with a coil content of about 0.5, so the horizontal line around 0.48 of the /2353subgroup/ model falsely suggests good accuracy without finding any correlation between prediction and measurement.
+The marginal improvement over the /401subgroup/ model is given by the even more horizontal line crossing the center of the peak cloud more effectively (Fig. [[scatter_comparison]] c).
+
+As with the Pearson correlation coefficient comparison, the /2353all/ model shows the best overall RMSE values.
+Unlike the previously discussed model, the RMSE value for coil content of 0.14 in the scatter plot also shows correlation between predictions and measurements (Fig. [[scatter_comparison]] i).
+Elsewhere, RMSE values of 0.14 for helix content and 0.08 for sheet content show only minimal improvement in the competing models discussed previously.
+
+To summarize an important finding from the data: When comparing the replicated model (/401subgroup/ model) with the model from the reference article, we were able to show that with similarly found correlating quadrants we obtain similar correlation values (helix prediction), while minor changes in the selected quadrants can lead to a large improvement or a deterioration (sheet prediction). This emphasizes the importance of proper quadrant selection for prediction.
+
+#+CAPTION: Comparison of the four different linear models secondary structure elements predictions by using the RMSE score. The /2353all/-model (bottom) shows the best performance.
+#+NAME: rmse_comparison
+#+ATTR_LATEX: :width 13cm
+[[../img/rmse_comparison.jpg]]
+
+For the sake of clarity, the aforementioned scatter plots in Figure [[scatter_comparison]] show the linear correlation between the secondary structure content predicted by the models and the measured secondary structure content.
+Unlike the previous methods, where the Pearson correlation coefficient and RMSE value were calculated based on 488 000 predictions (test set size \cdot 10x100 cross-validation), the scatter plots used the mean predictions of 1000 models from the cross-validation process, resulting in 488 points in the scatter plot.
+
+Overall, the $R^2$ values are very low with a maximum value of 0.64 for the helix content, 0.76 for the sheet content, and only 0.25 for the coil content, all from the /2353all/ model.
+Even though the RMSE values (Figure [[rmse_comparison]]) are on average wrong by 8% to 9% for sheet content and 14% to 18% for helix content, the three best models are not able to effectively explain the variation in secondary structure content.
+In particular, the coil content prediction suffers from being unable to explain any variation with $R^2$ values ranging from 0.25 for the /2353all/ model to as low as -0.21 for the /2353subgroup/ model.
+
+#+CAPTION: Correlation of the predicted and measured secondary structure content for helix, sheet and coil for all four trained models.
+#+NAME: scatter_comparison
+#+ATTR_LATEX: :width 13cm
+[[../img/comparison_scatter_plot.jpg]]
+
+
+ 
+# ! scatter plots
+# \begin{figure}
+# \centering
+# \subfigure[]{\includegraphics[width=0.32\textwidth]{../img/Pearson_scatter_rebuild big helix.png}}\hspace{0.1em}
+# \subfigure[]{\includegraphics[width=0.32\textwidth]{../img/Pearson_scatter_rebuild big sheet.png}}\hspace{0.1em}
+#  \subfigure[]{\includegraphics[width=0.32\textwidth]{../img/Pearson_scatter_rebuild big coil.png}}\hspace{0.1em}
+
+# \subfigure[]{\includegraphics[width=0.32\textwidth]{../img/Pearson_scatter_rebuild small helix.png}}\hspace{0.1em}
+# \subfigure[]{\includegraphics[width=0.32\textwidth]{../img/Pearson_scatter_rebuild small sheet.png}}\hspace{0.1em}
+#  \subfigure[]{\includegraphics[width=0.32\textwidth]{../img/Pearson_scatter_rebuild small coil.png}}\hspace{0.1em}
+
+# \subfigure[]{\includegraphics[width=0.32\textwidth]{../img/Pearson_scatter_simple big helix.png}}\hspace{0.1em}
+#  \subfigure[]{\includegraphics[width=0.32\textwidth]{../img/Pearson_scatter_simple big sheet.png}}\hspace{0.1em}
+#  \subfigure[]{\includegraphics[width=0.32\textwidth]{../img/Pearson_scatter_simple big coil.png}}\hspace{0.1em}
+
+# \subfigure[]{\includegraphics[width=0.32\textwidth]{../img/Pearson_scatter_simple small helix.png}}\hspace{0.1em}
+ # \subfigure[]{\includegraphics[width=0.32\textwidth]{../img/Pearson_scatter_simple small sheet.png}}\hspace{0.1em}
+ # \subfigure[]{\includegraphics[width=0.32\textwidth]{../img/Pearson_scatter_simple small coil.png}}
+ # \caption{(a) Rebuild big (b) Rebuild small (c) Simple big (d) Simple small}
+ #  \label{fig:error_sheet}
+ #  \end{figure}
+
+
+
+
+
+
+# ! heatmaps
+# \begin{figure}
+# \centering
+# \subfigure[]{\includegraphics[height=0.25\textwidth]{../img/correlation_heatmap_big_helix.png}}\hspace{0.1em}
+# \subfigure[]{\includegraphics[height=0.25\textwidth]{../img/correlation_heatmap_big_sheet.png}}\hspace{0.1em}
+#  \subfigure[]{\includegraphics[height=0.25\textwidth]{../img/correlation_heatmap_big_coil.png}}\hspace{0.1em}
+#  \subfigure[]{\includegraphics[height=0.25\textwidth]{../img/correlation_heatmap_small_helix.png}}\hspace{0.1em}
+# \subfigure[]{\includegraphics[height=0.25\textwidth]{../img/correlation_heatmap_small_sheet.png}}\hspace{0.1em}
+#  \subfigure[]{\includegraphics[height=0.25\textwidth]{../img/correlation_heatmap_small_coil.png}}\hspace{0.1em}
+#  \subfigure[]{\includegraphics[height=0.25\textwidth]{../img/correlation_heatmap_Moreau_helix.png}}\hspace{0.1em}
+#  \subfigure[]{\includegraphics[height=0.25\textwidth]{../img/correlation_heatmap_Moreau_sheet.png}}\hspace{0.1em}
+#  \subfigure[]{\includegraphics[height=0.25\textwidth]{../img/correlation_heatmap_Moreau_coil.png}}
+#  \caption{(a) Rebuild big (b) Rebuild small (c) Simple big (d) Simple small}
+#   \label{fig:error_sheet}
+#   \end{figure}
+#
+
+* Interplay of the Helix, Sheet and Coil Model
+Finally, we examined the distribution of prediction losses and how the three different models (helix, sheet and coil model) for the secondary structure elements complement each other by combining all three predictions.
+As shown in Figure. [[error_sum_1]] and [[error_sum_2]], the right panel shows the distribution of prediction losses for all three secondary structure elements.
+Calculating the sum of the three secondary structure predictions for all 488 000 predictions, we obtain the distribution centered around one in the figure on the left.
+
+Starting with Figure [[error_sum_1]], which shows the models trained on the larger dataset, one can observe the narrowest distribution for the sheet content and a wider distribution for helix and coil content in the /2353all/ model, as expected.
+Surprisingly, the distribution of the combined prediction, when summed, shows a near perfect distribution centered at one.
+In comparison, the /2353subgroup/ model shows a wider distribution for three secondary structure elements, which also leads to a wider distribution when combined.
+Both models show a slightly skewed right-hand distribution for the helix component in the individual prediction error plots, in contrast to the left-skewed distribution for the sheet and coil components.
+Since the error calculation was performed using the formula $measurement - prediction$, the right-skewed helix content distributions show a slight overestimation of helix content by the models, while the opposite is true for the sheet and coil content.
+
+Continuing with the models trained on the small data set in Figure [[error_sum_2]], the /401sugroup/ model shows the same relative distribution as the models discussed previously:
+The distribution of the sheet content is the most narrowed distribution, followed by the distribution of the helix content and the coil content, which have almost the same distribution and differ only in the opposite skewness.
+As seen previously, the sheet prediction error histogram also shows a slightly left skewed distribution.
+
+As expected from the previous analysis, the /401all/ model shows the widest distribution for all secondary structure elements, which also leads to the widest distribution when the individual secondary structure elements are combined.
+The pattern found in the skewed distributions for all three different secondary structure elements is more pronounced due to the wider distribution.
+Therefore, the overestimation of the helix component and the underestimation of the sheet and coil components are the highest.
+Overall, the models trained with the small data set show a flatter distribution than the models trained with the larger data set.
+
+
+#+CAPTION: Correlation of the predicted and measured secondary structure content for helix, sheet and coil for all four trained models.
+#+NAME: error_sum_1
+#+ATTR_LATEX: :width 13cm
+[[../img/comparison_prediction_sum_error_part1.jpg]]
+
+
+#+CAPTION: Correlation of the predicted and measured secondary structure content for helix, sheet and coil for all four trained models.
+#+NAME: error_sum_2
+#+ATTR_LATEX: :width 13cm
+[[../img/comparison_prediction_sum_error_part2.jpg]]
