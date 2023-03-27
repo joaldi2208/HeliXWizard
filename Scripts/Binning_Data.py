@@ -5,8 +5,8 @@ import pickle
 def get_prefiltered_ids(unfiltered_chemical_shifts):
     """return only dictionary entries for those you fullfill the filter requirements from the earlier filter stage."""
     
-    #with open("aggregated_bmrd_ids.txt", "r") as infile: # here changeable
-    with open("Project/big_dataset_thesis.txt", "r") as infile: # here changeable
+    with open("Thesis_aggregated_bmrd_ids.txt", "r") as infile: # here changeable
+    #with open("Project/big_dataset_thesis.txt", "r") as infile: # here changeable
         filtered_IDs = infile.read().replace("\n","").split(",")
         filtered_IDs = [int(bmrb_id) for bmrb_id in filtered_IDs]
 
